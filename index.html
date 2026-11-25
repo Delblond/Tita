@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Tita">
+<meta name="theme-color" content="#1d4e79">
+<title>Infirmière Tita</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;700&family=Inter:wght@400;600&family=Caveat:wght@500;700&display=swap" rel="stylesheet">
+<style>
+/* VOICE: tendre et rassurant, un carnet de poche pour la dernière ligne droite
+   IDEA: le carnet de stage d'une étudiante, glissé dans la poche de la blouse, avec un mot du mari plié dedans
+   PICTURE: le petit mot manuscrit sur papier rose, qui s'ouvre à chaque visite, avec un cœur qui bat
+   COLOUR and TYPE: bleu blouse dominant, blanc, rose tendre en accent ; Outfit, Inter, Caveat pour l'écriture de la main
+   LAYOUT: une colonne, onglets en bas au pouce, une tâche par écran */
+:root{color-scheme:light dark;--bg:light-dark(#ffffff,#0c1724);--ink:light-dark(#10243a,#e9eff6);--mut:light-dark(#5b6c7e,#9fb1c4);--line:light-dark(#e2e8ef,#1f3348);--card:light-dark(#f2f6fa,#13263a);--paper:light-dark(#fff1f4,#341c28);--paperInk:light-dark(#5a1f33,#ffd9e3);--blue:#1d4e79;--rose:#ff6f91;--ok:light-dark(#1f8a5b,#5fd39c)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 Inter,system-ui,sans-serif;overflow-x:clip;padding-bottom:calc(88px + env(safe-area-inset-bottom))}
+h1,h2,h3{font-family:Outfit,system-ui,sans-serif;margin:0;line-height:1.1;text-wrap:balance}
+h2{font-size:22px;margin:22px 0 10px}
+h3{font-size:18px;margin-bottom:8px}
+header{background:var(--blue);color:#fff;padding:22px max(4vw,16px) 20px}
+header h1{font-size:32px}
+header p{margin:4px 0 0;color:#cfdceb}header p::first-letter{text-transform:uppercase}
+main{max-width:640px;margin:0 auto;padding:6px max(4vw,14px) 16px}
+.view{display:none}.view.on{display:block}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:var(--card);border-radius:12px;min-height:44px;padding:0 14px;-webkit-tap-highlight-color:transparent}
+button.pri{background:var(--blue);color:#fff;font-weight:600}
+button.rose{background:var(--rose);color:#fff;font-weight:600}
+button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:3px solid var(--rose);outline-offset:2px}
+input,textarea,select{font:16px Inter,sans-serif;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px;min-height:44px;width:100%}
+textarea{min-height:130px;resize:vertical;line-height:1.45}
+label{font-size:14px;color:var(--mut);display:grid;gap:4px}
+.hint{font-size:13px;color:var(--mut);margin:6px 0 0}
+.card{background:var(--card);border-radius:16px;padding:16px;margin-bottom:12px}
+.f2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.dot{width:14px;height:14px;border-radius:50%;flex:none;display:inline-block}
+/* mot doux */
+.note{background:var(--paper);color:var(--paperInk);border-radius:18px;padding:20px 20px 14px;margin:16px 0 12px;position:relative;box-shadow:0 10px 30px -18px rgba(255,111,145,.7)}
+.note .txt{font:500 26px/1.25 Caveat,cursive}
+.note .sig{font:700 20px Caveat,cursive;text-align:right;margin-top:8px;opacity:.85}
+.note .acts{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+.note .acts button{background:rgba(255,111,145,.16);color:inherit;font-size:15px}
+.note .acts button.fav{margin-left:auto}
+.heart{width:22px;height:22px;vertical-align:-5px}
+/* aujourd'hui */
+.today{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.tile{background:var(--card);border-radius:14px;padding:14px}
+.tile small{color:var(--mut);font-size:13px;display:block}
+.tile b{font:700 20px/1.15 Outfit,system-ui,sans-serif;display:block;margin-top:2px}
+.tile span{font-size:14px;color:var(--mut);white-space:nowrap}
+.count{display:flex;align-items:center;gap:14px;background:var(--blue);color:#fff;border-radius:16px;padding:16px;margin-top:8px}
+.count b{font:700 clamp(40px,12vw,56px)/1 Outfit,system-ui,sans-serif;white-space:nowrap}
+.count small{color:#cfdceb;display:block}
+.ech{display:flex;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}
+.ech span:last-child{white-space:nowrap;color:var(--mut)}
+.prog{height:12px;border-radius:6px;background:var(--line);overflow:hidden;margin:8px 0 4px}
+.prog i{display:block;height:100%;background:var(--rose);border-radius:6px}
+/* planning */
+.mhead{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:14px 0 10px}
+.mhead h2{margin:0;text-transform:capitalize}
+.ico{width:44px;padding:0;font-size:22px}
+.grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px}
+.wd{font-size:13px;color:var(--mut);text-align:center;padding:4px 0}
+.day{border-radius:10px;background:var(--card);display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:5px 2px;min-height:54px}
+.day.out{visibility:hidden}
+.day .n{font-size:13px;color:var(--mut)}
+.day.td{box-shadow:inset 0 0 0 2px var(--rose)}
+.day .n.td{color:var(--rose);font-weight:600}
+.chip{font:700 14px Outfit,system-ui,sans-serif;border-radius:8px;padding:2px 0;width:88%;text-align:center;color:#10202f}
+.pal{display:flex;flex-wrap:wrap;gap:6px;margin:14px 0 4px}
+.pal button{display:flex;gap:8px;align-items:center;font-size:15px}
+.pal button.sel{background:var(--ink);color:var(--bg)}
+.stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:6px}
+.bars{display:grid;gap:8px;margin:6px 0}
+.bar{display:grid;grid-template-columns:6em minmax(0,1fr) 3.6em;gap:8px;align-items:center;font-size:14px}
+.bar i{display:block;height:12px;border-radius:6px;background:var(--rose)}
+.bar span:last-child{text-align:right;white-space:nowrap}
+.row{display:flex;align-items:center;gap:10px;justify-content:space-between;padding:4px 0}
+.row input{width:6.5em;text-align:right;flex:none}
+/* listes */
+.li{display:flex;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid var(--line)}
+.li input[type=checkbox]{width:24px;height:24px;min-height:0;flex:none;accent-color:var(--rose)}
+.li .t{flex:1;font-size:16px;color:var(--ink)}
+.li.done .t{text-decoration:line-through;color:var(--mut)}
+.li .x{min-height:40px;width:40px;padding:0;background:none;color:var(--mut);flex:none}
+.add{display:flex;gap:8px;margin:10px 0 4px}.add input{flex:1}.add button{flex:none}
+.comp{display:flex;gap:10px;align-items:center;width:100%;text-align:left;padding:10px 12px;margin-bottom:6px;min-height:56px}
+.comp .num{font:700 16px Outfit,system-ui,sans-serif;width:2.2em;flex:none}
+.comp .t{flex:1;font-size:15px;line-height:1.3}
+.lvl{font-size:12px;border-radius:999px;padding:3px 9px;white-space:nowrap;flex:none;color:#10202f;font-weight:600}
+.acte{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--line)}
+.acte .t{flex:1}
+.acte button{width:44px;padding:0;font-size:20px;flex:none}
+.acte b{font:700 18px Outfit,system-ui,sans-serif;width:2em;text-align:center;flex:none}
+/* calculs */
+.res{margin-top:12px;font:700 28px/1.2 Outfit,system-ui,sans-serif}
+.res small{display:block;font:400 14px Inter;color:var(--mut)}
+.warn{font-size:13px;color:var(--mut);border-left:3px solid var(--rose);padding-left:10px;margin:14px 0}
+.q{font-size:17px;margin:4px 0 12px}
+.fb{margin-top:10px;font-size:15px}
+.fb.ok{color:var(--ok);font-weight:600}
+.fb.ko{color:var(--rose);font-weight:600}
+.sol{font-size:14px;color:var(--mut);margin-top:6px}
+.btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+/* nav */
+nav{position:fixed;left:0;right:0;bottom:0;background:var(--bg);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(5,minmax(0,1fr));padding:4px 4px calc(4px + env(safe-area-inset-bottom));z-index:5}
+nav button{background:none;font-size:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-height:54px;color:var(--mut);padding:0 2px}
+nav button svg{width:22px;height:22px}
+nav button.on{color:var(--rose);font-weight:600}
+/* overlay */
+.ov{position:fixed;inset:0;background:rgba(10,22,36,.72);z-index:10;display:none;align-items:center;justify-content:center;padding:20px}
+.ov.on{display:flex}
+.ov .box{background:var(--paper);color:var(--paperInk);border-radius:22px;padding:26px 22px 20px;max-width:420px;width:100%;text-align:center;max-height:90vh;overflow:auto}
+.ov .txt{font:500 30px/1.2 Caveat,cursive;margin:12px 0 6px}
+.ov .sig{font:700 22px Caveat,cursive;opacity:.85;margin-bottom:18px}
+.ov .box button{width:100%}
+.ov .box label{text-align:left;color:inherit;opacity:.8;margin-bottom:10px}
+.ov h2{margin:8px 0 6px;font-size:28px}
+.ov p{margin:0 0 14px;font-size:16px}
+.beat{width:64px;height:64px;animation:beat 1.4s ease-in-out infinite}
+@keyframes beat{0%,100%{transform:scale(1)}15%{transform:scale(1.18)}30%{transform:scale(1)}45%{transform:scale(1.12)}}
+.toast{position:fixed;left:50%;bottom:100px;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:12px;opacity:0;transition:opacity .2s;pointer-events:none;z-index:20;max-width:90vw;text-align:center}
+.toast.on{opacity:1}
+details summary{cursor:pointer;min-height:44px;display:flex;align-items:center;font-weight:600}
+@media(prefers-reduced-motion:reduce){.beat{animation:none}.toast{transition:none}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><symbol id="h" viewBox="0 0 24 24"><path d="M12 21s-7.5-4.6-9.6-9.3C.9 8.3 3 4.5 6.7 4.5c2.2 0 3.6 1.3 4.3 2.5h2c.7-1.2 2.1-2.5 4.3-2.5 3.7 0 5.8 3.8 4.3 7.2C19.5 16.4 12 21 12 21z" fill="#ff6f91"/><path d="M6.6 7.2c-1.5.2-2.4 1.6-2.1 3.1" stroke="#fff" stroke-opacity=".6" stroke-width="1.4" fill="none" stroke-linecap="round"/></symbol></defs></svg>
+
+<header>
+  <h1 id="hello">Bonjour Tita</h1>
+  <p id="hdate"></p>
+</header>
+
+<main>
+  <!-- ACCUEIL -->
+  <section class="view on" id="v-home">
+    <div class="note" id="note"></div>
+    <div class="today" id="todayT"></div>
+    <div id="countBox"></div>
+    <div id="stageProg"></div>
+    <h2>Prochaines échéances</h2>
+    <div id="echList"></div>
+    <details class="card" style="margin-top:16px;padding:6px 16px">
+      <summary>Mes mots gardés</summary>
+      <div id="favs"></div>
+    </details>
+  </section>
+
+  <!-- PLANNING -->
+  <section class="view" id="v-plan">
+    <div class="mhead">
+      <button class="ico" id="mPrev" aria-label="Mois précédent">‹</button>
+      <h2 id="mTitle"></h2>
+      <button class="ico" id="mNext" aria-label="Mois suivant">›</button>
+    </div>
+    <div class="grid" id="cal"></div>
+    <div class="pal" id="pal"></div>
+    <p class="hint">Choisis un poste, puis touche les jours pour le poser. « Gomme » pour effacer.</p>
+    <h2 id="hTitle">Heures du mois</h2>
+    <div class="stats" id="stats"></div>
+    <h3 style="margin-top:16px">Par semaine</h3>
+    <div class="bars" id="bars"></div>
+    <details class="card" style="margin-top:14px;padding:6px 16px">
+      <summary>Régler les horaires des postes</summary>
+      <div id="durSet" style="padding-bottom:10px"></div>
+    </details>
+  </section>
+
+  <!-- STAGE -->
+  <section class="view" id="v-stage">
+    <h2>Mon stage</h2>
+    <div class="card">
+      <div class="f2">
+        <label>Lieu<input data-st="lieu" placeholder="Hôpital, clinique…"></label>
+        <label>Service<input data-st="service" placeholder="Ex. médecine"></label>
+        <label>Tuteur / tutrice<input data-st="tuteur"></label>
+        <label>Tél. du service<input data-st="tel" inputmode="tel"></label>
+        <label>Début<input type="date" data-st="debut"></label>
+        <label>Fin<input type="date" data-st="fin"></label>
+      </div>
+    </div>
+    <h2>Mes objectifs de stage</h2>
+    <div id="objs"></div>
+    <form class="add" id="objF"><input id="objI" placeholder="Nouvel objectif"><button class="pri">Ajouter</button></form>
+
+    <h2>Mes 10 compétences</h2>
+    <p class="hint" style="margin:-4px 0 10px">Touche une compétence pour changer son niveau. Pratique avant le bilan de mi-stage.</p>
+    <div id="comps"></div>
+
+    <h2>Mes actes réalisés</h2>
+    <div id="actes"></div>
+    <form class="add" id="acteF"><input id="acteI" placeholder="Autre acte"><button class="pri">Ajouter</button></form>
+    <button id="acteReset" style="margin-top:8px">Remettre les compteurs à zéro</button>
+
+    <h2>Mes échéances</h2>
+    <div id="echEdit"></div>
+    <form class="card" id="echF" style="margin-top:10px">
+      <div class="f2">
+        <label>Quoi<input id="echT" placeholder="Ex. MSP, mémoire, bilan"></label>
+        <label>Date<input id="echD" type="date"></label>
+      </div>
+      <button class="pri" style="margin-top:10px;width:100%">Ajouter l'échéance</button>
+    </form>
+  </section>
+
+  <!-- CALCULS -->
+  <section class="view" id="v-calc">
+    <p class="warn">Aide au calcul. Toujours vérifier avec la prescription, le protocole du service et ton infirmier référent.</p>
+    <div class="card">
+      <h3>Débit de perfusion</h3>
+      <div class="f2">
+        <label>Volume (ml)<input id="pv" type="number" inputmode="decimal" value="500"></label>
+        <label>Durée (h)<input id="pd" type="number" inputmode="decimal" value="8"></label>
+        <label style="grid-column:1/-1">Perfuseur<select id="pg"><option value="20">Standard : 20 gouttes/ml</option><option value="60">Micro-perfuseur : 60 gouttes/ml</option></select></label>
+      </div>
+      <div class="res" id="pr"></div>
+    </div>
+    <div class="card">
+      <h3>Dose selon le poids</h3>
+      <div class="f2">
+        <label>Poids (kg)<input id="dw" type="number" inputmode="decimal" value="70"></label>
+        <label>Dose (mg/kg)<input id="dd" type="number" inputmode="decimal" value="1"></label>
+        <label style="grid-column:1/-1">Concentration du produit (mg/ml)<input id="dc" type="number" inputmode="decimal" value="10"></label>
+      </div>
+      <div class="res" id="dr"></div>
+    </div>
+    <div class="card">
+      <h3>Pousse-seringue électrique</h3>
+      <div class="f2">
+        <label>Dose prescrite (mg/h)<input id="sd" type="number" inputmode="decimal" value="2"></label>
+        <label>Produit dans la seringue (mg)<input id="sq" type="number" inputmode="decimal" value="50"></label>
+        <label style="grid-column:1/-1">Volume total de la seringue (ml)<input id="sv" type="number" inputmode="decimal" value="50"></label>
+      </div>
+      <div class="res" id="sr"></div>
+    </div>
+    <div class="card">
+      <h3>Pourcentage → quantité</h3>
+      <div class="f2">
+        <label>Concentration (%)<input id="cp" type="number" inputmode="decimal" value="10"></label>
+        <label>Volume (ml)<input id="cv" type="number" inputmode="decimal" value="10"></label>
+      </div>
+      <div class="res" id="cr"></div>
+      <p class="hint">Rappel : 1 % = 1 g pour 100 ml = 10 mg/ml.</p>
+    </div>
+    <div class="card">
+      <h3>Conversion d'unités</h3>
+      <div class="f2">
+        <label>Valeur<input id="uv" type="number" inputmode="decimal" value="1"></label>
+        <label>De<select id="uf"><option>g</option><option selected>mg</option><option>µg</option></select></label>
+        <label style="grid-column:1/-1">Vers<select id="ut"><option>g</option><option>mg</option><option selected>µg</option></select></label>
+      </div>
+      <div class="res" id="ur"></div>
+    </div>
+
+    <h2>Entraînement calculs de doses</h2>
+    <div class="card" id="quiz">
+      <p class="hint" id="qScore" style="margin:0 0 8px"></p>
+      <p class="q" id="qTxt"></p>
+      <form id="qF" class="add" style="margin:0"><input id="qA" type="text" inputmode="decimal" placeholder="Ta réponse" autocomplete="off"><button class="pri">Vérifier</button></form>
+      <div class="fb" id="qFb"></div>
+      <div class="sol" id="qSol"></div>
+      <div class="btns"><button id="qNext">Question suivante</button><button id="qShow">Voir la solution</button></div>
+    </div>
+  </section>
+
+  <!-- NOTES -->
+  <section class="view" id="v-notes">
+    <h2>Mon sac de stage</h2>
+    <div id="bag"></div>
+    <form class="add" id="bagF"><input id="bagI" placeholder="Ajouter quelque chose"><button class="pri">Ajouter</button></form>
+    <button id="bagReset" style="margin-top:8px">Tout décocher</button>
+
+    <h2>Mes notes</h2>
+    <p class="warn" style="margin-top:0">Secret professionnel : jamais de nom ni d'info permettant de reconnaître un patient.</p>
+    <textarea id="notes" placeholder="Ce que j'ai appris, mes questions pour le tuteur, les numéros utiles…"></textarea>
+    <div class="btns"><button id="dar">Insérer un modèle de transmission ciblée</button></div>
+
+    <h2>Mon planning à envoyer</h2>
+    <p class="hint" style="margin:-4px 0 8px">Le mois affiché dans Planning, prêt pour WhatsApp.</p>
+    <textarea id="share" readonly style="min-height:110px"></textarea>
+    <button class="pri" id="shareCopy" style="margin-top:8px;width:100%">Copier mon planning</button>
+
+    <h2>Sauvegarde</h2>
+    <p class="hint" style="margin:-4px 0 8px">Tes données restent sur ce téléphone. Copie ce code de temps en temps (dans une note ou un message à toi-même) pour ne rien perdre.</p>
+    <button id="bkCopy" style="width:100%">Copier mon code de sauvegarde</button>
+    <textarea id="bkIn" placeholder="Colle ici un code de sauvegarde pour tout restaurer" style="min-height:70px;margin-top:10px"></textarea>
+    <button id="bkRestore" style="margin-top:8px;width:100%">Restaurer</button>
+  </section>
+</main>
+
+<nav id="nav">
+  <button class="on" data-v="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 20s-6.5-4-8.3-8C2.4 9 4.2 5.5 7.4 5.5c1.9 0 3.1 1.1 3.7 2.1h1.8c.6-1 1.8-2.1 3.7-2.1 3.2 0 5 3.5 3.7 6.5-1.8 4-8.3 8-8.3 8z"/></svg>Accueil</button>
+  <button data-v="plan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Planning</button>
+  <button data-v="stage"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V3h6v1M12 9v6M9 12h6"/></svg>Stage</button>
+  <button data-v="calc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 7h8M8 12h2M14 12h2M8 16h2M14 16h2"/></svg>Calculs</button>
+  <button data-v="notes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3h9l4 4v14H6z"/><path d="M9 12h7M9 16h7"/></svg>Notes</button>
+</nav>
+
+<div class="ov" id="ov" role="dialog" aria-modal="true"><div class="box" id="ovBox"></div></div>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+{
+/* ---------- Mots doux ---------- */
+const SIG='— Ton mari, qui t’aime plus que tout';
+const LOVE={
+g:[
+"Tu ne le vois peut-être pas, mais moi je te vois devenir chaque jour l’infirmière que tu rêvais d’être. Je suis tellement fier de toi.",
+"Dernière ligne droite, mon amour. Le plus dur est derrière toi, et moi je suis juste derrière toi, à chaque pas.",
+"Les patients qui t’ont aujourd’hui ont une chance folle. Moi, j’ai cette chance tous les jours.",
+"Respire. Tu sais bien plus de choses que tu ne le crois. Et si tu doutes, souviens-toi que moi, je ne doute pas de toi.",
+"Petit rappel officiel : tu es la plus belle infirmière de France. C’est vérifié, j’ai fait des recherches.",
+"Les enfants et moi, on est ta plus grande équipe de supporters. Allez Tita !",
+"Tu jongles entre les stages, les cours, la maison et nous. Tu es incroyable, et je ne te le dis pas assez.",
+"Si ta journée est dure, pense à ce soir : un câlin t’attend. Peut-être même deux.",
+"Je t’aime plus qu’hier, et bien moins que demain.",
+"Chaque journée de stage est une marche de plus vers ton diplôme. Et tu les montes toutes avec le sourire.",
+"Je suis fier d’être ton mari. Fier de ce que tu construis. Fier de toi, tout simplement.",
+"Un doute, une erreur, une remarque du tuteur ? C’est comme ça qu’on apprend. Tu vas y arriver, comme toujours.",
+"Prescription du jour : un grand sourire, un verre d’eau, une vraie pause. Et beaucoup d’amour, déjà livré.",
+"Quand je pense à toi, je souris comme un idiot. Je voulais juste que tu le saches.",
+"Quand je suis loin, c’est toi ma force. Laisse-moi être la tienne pendant cette dernière ligne droite.",
+"Dans quelques mois, je dirai « ma femme, infirmière diplômée ». Et je vais le dire à tout le monde.",
+"Ta douceur avec les gens, c’est ton super-pouvoir. Ne laisse personne te faire croire le contraire.",
+"Bois de l’eau, mange quelque chose, et n’oublie pas : quelqu’un t’aime plus que tout.",
+"Tu n’as pas besoin d’être parfaite. Tu es déjà exactement celle que j’aime.",
+"Je t’admire. Vraiment. Pour tout ce que tu fais sans jamais lâcher.",
+"Si tu lis ce message, c’est que tu penses à ton stage. Moi, je pense à toi.",
+"Les enfants ont la meilleure maman, les patients la meilleure infirmière, et moi la meilleure femme du monde.",
+"Calcul de dose du jour : toi + moi = de l’amour au débit maximum. Aucune erreur possible.",
+"Aucun stage, aucun partiel, aucune garde ne changera une chose : je suis fou de toi.",
+"Tu as le droit d’être fatiguée. Tu as aussi le droit d’être fière. Aujourd’hui, prends les deux.",
+"Souviens-toi du premier jour de ta formation. Regarde tout le chemin parcouru depuis. Bravo, mon amour.",
+"Tu es la plus belle chose qui me soit arrivée. Les trois autres plus belles choses, c’est toi qui me les as données.",
+"Si tu avais un compteur d’amour dans cette appli, il serait bloqué au maximum. Comme moi.",
+"Ce que tu fais est immense : soigner, rassurer, tenir la main. Je suis tellement fier de partager ta vie."
+],
+m:[
+"Bonne journée de stage, ma Tita. Sois douce avec toi-même aujourd’hui.",
+"Debout, future infirmière diplômée ! Le service a besoin de ton sourire ce matin.",
+"Un café, une grande respiration, et c’est parti. Je suis avec toi toute la journée.",
+"Ce matin, je t’envoie tout mon courage. Tu en auras même un peu trop, garde le reste pour demain."
+],
+e:[
+"Tu as pris soin des autres toute la journée. Ce soir, c’est moi qui prends soin de toi.",
+"Tu as fini ? Pose ta blouse, souffle un coup. Tu as été formidable aujourd’hui, j’en suis sûr.",
+"Ce soir, pas de révisions avant un câlin. C’est la règle de la maison.",
+"Raconte-moi ta journée ce soir. J’ai envie de tout savoir, même les détails.",
+"La journée est finie. Tu as beaucoup donné. Maintenant, laisse-toi chouchouter."
+],
+n:[
+"Si tu es de nuit, sache que je pense à toi pendant que tout le monde dort. Courage, mon amour.",
+"Il est tard. Ferme les yeux deux secondes et imagine-moi en train de te serrer fort.",
+"Les nuits sont longues, mais tu es plus forte qu’elles. Je t’aime."
+],
+w:[
+"C’est le week-end : respire, profite, déconnecte. Tu l’as mérité cent fois.",
+"Week-end en famille : au programme, des rires, des câlins et zéro stress. Les révisions peuvent attendre une heure."
+]};
+const FIRST="Cette application, je l’ai fait faire rien que pour toi, pour ta dernière ligne droite. À chaque fois que tu l’ouvriras, il y aura un petit mot de moi. Parce que je t’aime plus que tout.";
+
+/* ---------- Données ---------- */
+const P={
+  M:{n:'Matin',h:'06:45–14:15',d:7.5,c:'#ffd27a'},
+  S:{n:'Après-midi',h:'13:30–21:00',d:7.5,c:'#ffab8a'},
+  J:{n:'Journée 12 h',h:'07:00–19:00',d:12,c:'#7fd3de'},
+  N:{n:'Nuit',h:'21:00–07:00',d:10,c:'#a4adff'},
+  I:{n:'IFSI / cours',h:'08:30–16:30',d:7,c:'#d6bdff',school:true},
+  R:{n:'Repos',h:'',d:0,c:'#dde2ea'},
+  A:{n:'Absence',h:'',d:0,c:'#ff9db4'}
+};
+const COMP=["Évaluer une situation clinique et établir un diagnostic infirmier","Concevoir et conduire un projet de soins infirmiers","Accompagner une personne dans la réalisation de ses soins quotidiens","Mettre en œuvre des actions à visée diagnostique et thérapeutique","Initier et mettre en œuvre des soins éducatifs et préventifs","Communiquer et conduire une relation dans un contexte de soins","Analyser la qualité des soins et améliorer sa pratique professionnelle","Rechercher et traiter des données professionnelles et scientifiques","Organiser et coordonner des interventions soignantes","Informer et former des professionnels et des personnes en formation"];
+const LVL=[{n:'À évaluer',c:'#dde2ea'},{n:'À travailler',c:'#ffb3c4'},{n:'En cours',c:'#ffd27a'},{n:'Acquise',c:'#8fe0b5'}];
+const ACTES=["Prise de sang","Pose de cathéter (VVP)","Injection sous-cutanée","Injection intramusculaire","Glycémie capillaire","Pansement simple","Pansement complexe","Ablation fils / agrafes","Sondage urinaire","Pose de sonde gastrique","ECG","Préparation de pousse-seringue","Aspiration trachéale","Participation à une transfusion"];
+const BAG=["Badge / carte d’étudiante","Tenue propre + chaussures","Stylos 4 couleurs","Ciseaux et garrot","Montre à trotteuse","Carnet de stage / portfolio","Repas et bouteille d’eau","Chargeur de téléphone","Garde des enfants confirmée"];
+
+const KEY='tita-app-v1';
+const pad=n=>String(n).padStart(2,'0');
+const iso=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+const pd=s=>{const d=new Date(s+'T00:00:00');return isNaN(d)?null:d};
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const num=v=>{const x=parseFloat(String(v).replace(',','.'));return isFinite(x)?x:0};
+const fmt=(n,dp=2)=>{const f=10**dp;return (Math.round(n*f)/f).toLocaleString('fr-FR')};
+const $=id=>document.getElementById(id);
+const getToday=()=>{const t=new Date();t.setHours(0,0,0,0);return t};
+let today=getToday();
+
+function fresh(){return{first:true,plan:{},dur:{},stage:{lieu:'',service:'',tuteur:'',tel:'',debut:'',fin:''},obj:[],comp:COMP.map(()=>0),actes:ACTES.map(n=>({n,c:0})),ech:[],bag:BAG.map(t=>({t,done:false})),notes:'',love:{seen:[],fav:[],cur:null},quiz:{ok:0,tot:0}}}
+let S=fresh();
+try{const raw=localStorage.getItem(KEY);if(raw)S=Object.assign(fresh(),JSON.parse(raw))}catch(e){}
+function applyDur(){for(const k in P){const base={M:7.5,S:7.5,J:12,N:10,I:7,R:0,A:0}[k];P[k].d=S.dur&&S.dur[k]!=null?num(S.dur[k]):base}}
+applyDur();
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+const work=k=>!!(k&&P[k]&&P[k].d>0&&!P[k].school);
+
+/* ---------- Toast ---------- */
+let tt;function toast(t){const e=$('toast');e.textContent=t;e.classList.add('on');clearTimeout(tt);tt=setTimeout(()=>e.classList.remove('on'),1800)}
+async function copy(text,ok){try{await navigator.clipboard.writeText(text);toast(ok)}catch(e){toast('Copie impossible ici : sélectionne le texte et copie-le')}}
+
+/* ---------- Mot doux ---------- */
+function loveById(id){const [p,i]=id.split(':');return LOVE[p]&&LOVE[p][+i]}
+function drawLove(){
+  const now=new Date(),h=now.getHours(),wd=now.getDay(),tk=S.plan[iso(today)];
+  const ctx=[];
+  if(h>=22||h<5||tk==='N')ctx.push('n');else if(h>=5&&h<11)ctx.push('m');else if(h>=18)ctx.push('e');
+  if(wd===0||wd===6)ctx.push('w');
+  let pool=[];
+  const want=ctx.length&&Math.random()<.45?ctx:['g'];
+  for(const p of want)LOVE[p].forEach((_,i)=>pool.push(p+':'+i));
+  let avail=pool.filter(id=>!S.love.seen.includes(id)&&id!==S.love.cur);
+  if(!avail.length){S.love.seen=S.love.seen.filter(id=>!pool.includes(id));avail=pool.filter(id=>id!==S.love.cur)}
+  const id=avail[Math.floor(Math.random()*avail.length)];
+  S.love.seen.push(id);S.love.cur=id;save();return id;
+}
+function renderNote(){
+  const id=S.love.cur,t=id?loveById(id):FIRST,fav=id&&S.love.fav.includes(id);
+  $('note').innerHTML=`<div class="txt">${esc(t)}</div><div class="sig">${SIG}</div>
+  <div class="acts"><button id="moreLove">Un autre mot</button>${id?`<button class="fav" id="favLove" aria-pressed="${fav}">${fav?'Gardé':'Garder'} <svg class="heart"><use href="#h"/></svg></button>`:''}</div>`;
+  const f=S.love.fav.map(loveById).filter(Boolean);
+  $('favs').innerHTML=f.length?f.map(t=>`<p style="font:500 22px/1.25 Caveat,cursive;margin:8px 0 12px">${esc(t)}</p>`).join(''):'<p class="hint" style="margin-bottom:12px">Touche « Garder » sous un mot pour le retrouver ici.</p>';
+}
+function showLoveOverlay(){
+  const id=drawLove();
+  $('ovBox').innerHTML=`<svg class="beat"><use href="#h"/></svg><div class="txt">${esc(loveById(id))}</div><div class="sig">${SIG}</div><button class="rose" id="ovClose">Moi aussi je t’aime</button>`;
+  $('ov').classList.add('on');renderNote();
+  setTimeout(()=>{const b=$('ovClose');if(b)b.focus()},50);
+}
+function showWelcome(){
+  $('ovBox').innerHTML=`<svg class="beat"><use href="#h"/></svg><h2>Bienvenue, Tita</h2><div class="txt" style="font-size:25px">${esc(FIRST)}</div><div class="sig">${SIG}</div>
+  <label>Fin de ton stage actuel (si tu l’as)<input type="date" id="wFin"></label>
+  <label>Date du diplôme ou de fin de formation (si tu l’as)<input type="date" id="wDE"></label>
+  <button class="rose" id="wGo">C’est parti</button><p class="hint" style="margin:10px 0 0;color:inherit;opacity:.7">Tu pourras tout changer plus tard dans l’onglet Stage.</p>`;
+  $('ov').classList.add('on');
+}
+$('ov').addEventListener('click',e=>{
+  if(e.target.id==='ovClose'){$('ov').classList.remove('on')}
+  if(e.target.id==='wGo'){
+    const fin=$('wFin').value,de=$('wDE').value;
+    if(fin){S.stage.fin=fin;S.ech.push({t:'Fin du stage',d:fin})}
+    if(de)S.ech.push({t:'Diplôme d’État',d:de});
+    S.first=false;save();renderAll();showLoveOverlay();
+  }
+});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('ov').classList.contains('on')&&!S.first)$('ov').classList.remove('on')});
+
+/* ---------- Accueil ---------- */
+const days=d=>Math.round((d-today)/864e5);
+const dLong=d=>d.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'});
+function renderHome(){
+  const h=new Date().getHours();
+  $('hello').textContent=(h>=18||h<5?'Bonsoir':'Bonjour')+' Tita';
+  $('hdate').textContent=dLong(today);
+  const tile=(lab,d)=>{const k=S.plan[iso(d)];return `<div class="tile"><small>${lab}</small>${k?`<b><span class="dot" style="background:${P[k].c};margin-right:6px"></span>${P[k].n}</b><span>${P[k].h||'&nbsp;'}</span>`:'<b>Rien de prévu</b><span>à remplir dans Planning</span>'}</div>`};
+  const tm=new Date(today);tm.setDate(tm.getDate()+1);
+  $('todayT').innerHTML=tile("Aujourd’hui",today)+tile('Demain',tm);
+  const up=S.ech.map(e=>({...e,dt:pd(e.d)})).filter(e=>e.dt&&e.dt>=today).sort((a,b)=>a.dt-b.dt);
+  if(up.length){const e=up[0],n=days(e.dt);
+    $('countBox').innerHTML=`<div class="count"><b>${n===0?'Jour J':n}</b><div><small>${n===0?'C’est aujourd’hui':n===1?'jour avant':'jours avant'}</small><strong style="font:700 19px Outfit,system-ui,sans-serif">${esc(e.t)}</strong><small>${esc(dLong(e.dt))}</small></div></div>`;
+  }else $('countBox').innerHTML='';
+  $('echList').innerHTML=up.length?up.slice(0,4).map(e=>{const n=days(e.dt);return `<div class="ech"><span>${esc(e.t)}</span><span>${n===0?"aujourd’hui":'J-'+n}</span></div>`}).join(''):'<p class="hint">Ajoute tes dates importantes (MSP, mémoire, bilans, diplôme) dans l’onglet Stage.</p>';
+  const a=pd(S.stage.debut),b=pd(S.stage.fin);
+  if(a&&b&&b>a){
+    const p=Math.min(100,Math.max(0,(today-a)/(b-a)*100)),left=Math.max(0,days(b));
+    let hrs=0;for(const k in S.plan){const d=pd(k);if(d&&d>=a&&d<=b&&d<=today&&work(S.plan[k]))hrs+=P[S.plan[k]].d}
+    $('stageProg').innerHTML=`<div class="card" style="margin-top:12px"><h3>${esc(S.stage.service||'Mon stage')}${S.stage.lieu?' · '+esc(S.stage.lieu):''}</h3><div class="prog"><i style="width:${p}%"></i></div><small style="color:var(--mut)">${Math.round(p)} % fait · ${left} jour${left>1?'s':''} restant${left>1?'s':''} · ${fmt(hrs,1)} h de stage réalisées</small></div>`;
+  }else $('stageProg').innerHTML='';
+  renderNote();
+}
+$('note').addEventListener('click',e=>{
+  if(e.target.closest('#moreLove')){drawLove();renderNote()}
+  else if(e.target.closest('#favLove')){const id=S.love.cur,i=S.love.fav.indexOf(id);if(i<0){S.love.fav.push(id);toast('Mot gardé')}else S.love.fav.splice(i,1);save();renderNote()}
+});
+
+/* ---------- Planning ---------- */
+let cur=new Date(today.getFullYear(),today.getMonth(),1),brush='M';
+const mName=d=>d.toLocaleDateString('fr-FR',{month:'long',year:'numeric'});
+function monthDays(){const y=cur.getFullYear(),m=cur.getMonth(),n=new Date(y,m+1,0).getDate(),a=[];for(let d=1;d<=n;d++){const dt=new Date(y,m,d);a.push({dt,k:S.plan[iso(dt)]})}return a}
+function renderPlan(){
+  $('mTitle').textContent=mName(cur);
+  const off=(new Date(cur.getFullYear(),cur.getMonth(),1).getDay()+6)%7;
+  let h=['L','M','M','J','V','S','D'].map(w=>`<div class="wd">${w}</div>`).join('')+'<div class="day out"></div>'.repeat(off);
+  for(const {dt,k} of monthDays()){const td=dt.getTime()===today.getTime();
+    h+=`<button class="day${td?' td':''}" data-d="${iso(dt)}" aria-label="${dt.getDate()} : ${k?P[k].n:'vide'}"><span class="n${td?' td':''}">${dt.getDate()}</span>${k?`<span class="chip" style="background:${P[k].c}">${k}</span>`:'<span></span>'}</button>`}
+  $('cal').innerHTML=h;
+  $('pal').innerHTML=Object.keys(P).map(k=>`<button data-b="${k}" class="${brush===k?'sel':''}"><span class="dot" style="background:${P[k].c}"></span>${P[k].n}</button>`).join('')+`<button data-b="X" class="${brush==='X'?'sel':''}">Gomme</button>`;
+  $('hTitle').textContent='Heures · '+mName(cur);
+  let tot=0,n=0,nu=0,ab=0,sc=0;
+  for(const {k} of monthDays()){if(work(k)){tot+=P[k].d;n++;if(k==='N')nu++}if(k==='A')ab++;if(k==='I')sc++}
+  $('stats').innerHTML=[[fmt(tot,1)+' h','de stage ce mois'],[n,'postes'],[nu,'nuits'],[ab,ab>1?'absences':'absence'],[sc,'jours IFSI']].map((s,i)=>`<div class="tile"${i===0?' style="background:var(--blue);color:#fff"':''}><b style="font-size:26px">${s[0]}</b><small${i===0?' style="color:#cfdceb"':''}>${s[1]}</small></div>`).join('');
+  const wk={};for(const {dt,k} of monthDays()){const m=new Date(dt);m.setDate(dt.getDate()-((dt.getDay()+6)%7));const key=iso(m);wk[key]=(wk[key]||0)+(work(k)?P[k].d:0)}
+  const mx=Math.max(40,...Object.values(wk));
+  $('bars').innerHTML=Object.entries(wk).map(([k,v])=>{const d=pd(k);return `<div class="bar"><span>sem. ${d.getDate()}/${d.getMonth()+1}</span><i style="width:${Math.max(1.5,v/mx*100)}%"></i><span>${fmt(v,1)} h</span></div>`}).join('');
+  $('durSet').innerHTML=Object.keys(P).filter(k=>P[k].h).map(k=>`<div class="row"><span><span class="dot" style="background:${P[k].c};margin-right:8px"></span>${P[k].n}</span><input type="number" inputmode="decimal" step="0.25" data-dur="${k}" value="${P[k].d}" aria-label="Heures ${P[k].n}"></div>`).join('')+'<p class="hint">Durée en heures comptée pour chaque poste.</p>';
+  renderShare();
+}
+$('cal').addEventListener('click',e=>{const b=e.target.closest('[data-d]');if(!b)return;if(brush==='X')delete S.plan[b.dataset.d];else S.plan[b.dataset.d]=brush;save();renderPlan();renderHome()});
+$('pal').addEventListener('click',e=>{const b=e.target.closest('[data-b]');if(!b)return;brush=b.dataset.b;renderPlan()});
+$('mPrev').onclick=()=>{cur=new Date(cur.getFullYear(),cur.getMonth()-1,1);renderPlan()};
+$('mNext').onclick=()=>{cur=new Date(cur.getFullYear(),cur.getMonth()+1,1);renderPlan()};
+$('durSet').addEventListener('change',e=>{const k=e.target.dataset.dur;if(!k)return;S.dur[k]=Math.max(0,num(e.target.value));applyDur();save();renderPlan();renderHome()});
+
+/* ---------- Stage ---------- */
+function list(el,arr,key){
+  $(el).innerHTML=arr.length?arr.map((o,i)=>`<div class="li${o.done?' done':''}"><input type="checkbox" id="${key}${i}" data-k="${key}" data-i="${i}" ${o.done?'checked':''}><label for="${key}${i}" class="t">${esc(o.t)}</label><button class="x" data-del="${key}" data-i="${i}" aria-label="Supprimer">✕</button></div>`).join(''):'<p class="hint">Rien pour l’instant.</p>';
+}
+function renderStage(){
+  document.querySelectorAll('[data-st]').forEach(i=>{if(document.activeElement!==i)i.value=S.stage[i.dataset.st]||''});
+  list('objs',S.obj,'obj');
+  $('comps').innerHTML=COMP.map((t,i)=>{const l=LVL[S.comp[i]||0];return `<button class="comp" data-c="${i}"><span class="num">C${i+1}</span><span class="t">${t}</span><span class="lvl" style="background:${l.c}">${l.n}</span></button>`}).join('')+`<p class="hint">${S.comp.filter(x=>x===3).length} compétence(s) acquise(s) sur 10.</p>`;
+  $('actes').innerHTML=S.actes.map((a,i)=>`<div class="acte"><span class="t">${esc(a.n)}</span><button data-a="${i}" data-s="-1" aria-label="Moins">−</button><b>${a.c}</b><button data-a="${i}" data-s="1" aria-label="Plus">+</button></div>`).join('');
+  const e=S.ech.map((x,i)=>({...x,i,dt:pd(x.d)})).sort((a,b)=>(a.dt||0)-(b.dt||0));
+  $('echEdit').innerHTML=e.length?e.map(x=>`<div class="li"><span class="t">${esc(x.t)}<br><small style="color:var(--mut)">${x.dt?esc(x.dt.toLocaleDateString('fr-FR',{day:'numeric',month:'long',year:'numeric'})):''}</small></span><button class="x" data-ech="${x.i}" aria-label="Supprimer">✕</button></div>`).join(''):'<p class="hint">Aucune échéance pour l’instant.</p>';
+}
+document.querySelectorAll('[data-st]').forEach(i=>i.addEventListener('input',()=>{S.stage[i.dataset.st]=i.value;save();renderHome()}));
+function bindList(el,key,arr){
+  $(el).addEventListener('change',e=>{if(e.target.dataset.k===key){arr()[+e.target.dataset.i].done=e.target.checked;save();key==='obj'?renderStage():renderNotes()}});
+  $(el).addEventListener('click',e=>{const b=e.target.closest('[data-del]');if(b&&b.dataset.del===key){arr().splice(+b.dataset.i,1);save();key==='obj'?renderStage():renderNotes()}});
+}
+bindList('objs','obj',()=>S.obj);
+$('objF').addEventListener('submit',e=>{e.preventDefault();const t=$('objI').value.trim();if(!t)return;S.obj.push({t,done:false});$('objI').value='';save();renderStage()});
+$('comps').addEventListener('click',e=>{const b=e.target.closest('[data-c]');if(!b)return;const i=+b.dataset.c;S.comp[i]=((S.comp[i]||0)+1)%4;save();renderStage()});
+$('actes').addEventListener('click',e=>{const b=e.target.closest('[data-a]');if(!b)return;const a=S.actes[+b.dataset.a];a.c=Math.max(0,a.c+ +b.dataset.s);save();renderStage()});
+$('acteF').addEventListener('submit',e=>{e.preventDefault();const t=$('acteI').value.trim();if(!t)return;S.actes.push({n:t,c:0});$('acteI').value='';save();renderStage()});
+let rs=0;$('acteReset').addEventListener('click',e=>{if(!rs){rs=1;e.target.textContent='Touche encore pour confirmer';setTimeout(()=>{rs=0;e.target.textContent='Remettre les compteurs à zéro'},3000);return}rs=0;e.target.textContent='Remettre les compteurs à zéro';S.actes.forEach(a=>a.c=0);save();renderStage();toast('Compteurs remis à zéro')});
+$('echF').addEventListener('submit',e=>{e.preventDefault();const t=$('echT').value.trim(),d=$('echD').value;if(!t||!d){toast('Indique un titre et une date');return}S.ech.push({t,d});$('echT').value='';$('echD').value='';save();renderStage();renderHome();toast('Échéance ajoutée')});
+$('echEdit').addEventListener('click',e=>{const b=e.target.closest('[data-ech]');if(!b)return;S.ech.splice(+b.dataset.ech,1);save();renderStage();renderHome()});
+
+/* ---------- Calculs ---------- */
+function calc(){
+  const v=id=>num($(id).value);
+  const vol=v('pv'),du=v('pd'),g=v('pg');
+  $('pr').innerHTML=du>0&&vol>0?`${fmt(vol/du,1)} ml/h<small>soit environ ${Math.round(vol*g/(du*60))} gouttes/min</small>`:'—';
+  const mg=v('dw')*v('dd'),c=v('dc');
+  $('dr').innerHTML=mg>0?`${fmt(mg)} mg<small>${c>0?'soit '+fmt(mg/c)+' ml à prélever':'indique la concentration pour le volume'}</small>`:'—';
+  const q=v('sq'),sv=v('sv'),dose=v('sd'),conc=sv>0?q/sv:0;
+  $('sr').innerHTML=conc>0&&dose>0?`${fmt(dose/conc)} ml/h<small>concentration ${fmt(conc)} mg/ml · seringue finie en ${fmt(q/dose,1)} h</small>`:'—';
+  const pc=v('cp'),cv=v('cv');
+  $('cr').innerHTML=pc>0&&cv>0?`${fmt(pc*cv/100,3)} g<small>soit ${fmt(pc*cv*10)} mg · ${fmt(pc*10)} mg/ml</small>`:'—';
+  const F={g:1e6,mg:1e3,'µg':1},x=v('uv')*F[$('uf').value]/F[$('ut').value];
+  $('ur').innerHTML=`${fmt(x,6)} ${$('ut').value}`;
+}
+document.querySelectorAll('#v-calc .card:not(#quiz) input,#v-calc .card:not(#quiz) select').forEach(i=>i.addEventListener('input',calc));
+
+/* ---------- Entraînement ---------- */
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+const GEN=[
+ ()=>{const V=pick([250,500,1000,1500]),t=pick([2,4,5,6,8,12,24]),r=V/t;return{q:`Perfusion de ${V} ml à passer en ${t} h. Quel débit en ml/h ?`,a:r,u:'ml/h',tol:.1,s:`${V} ÷ ${t} = ${fmt(r,1)} ml/h`}},
+ ()=>{const V=pick([500,1000]),t=pick([4,6,8,12,24]),r=V*20/(t*60);return{q:`${V} ml en ${t} h avec un perfuseur standard (20 gouttes/ml). Combien de gouttes par minute ?`,a:r,u:'gouttes/min',tol:1,s:`(${V} × 20) ÷ (${t} × 60) = ${fmt(r,1)}, soit environ ${Math.round(r)} gouttes/min`}},
+ ()=>{const p=pick([5,10,20,30]),V=pick([10,20]),r=p*V/100;return{q:`Une ampoule de ${V} ml d’une solution à ${p} %. Combien de grammes de produit contient-elle ?`,a:r,u:'g',tol:.01,s:`${p} % = ${p} g pour 100 ml → ${p} × ${V} ÷ 100 = ${fmt(r)} g`}},
+ ()=>{const D=pick([0.5,1,2,5]),W=pick([50,55,60,65,70,75,80,85,90]),C=pick([5,10,20,50]),r=D*W/C;return{q:`Prescription : ${fmt(D)} mg/kg. Patient de ${W} kg. Produit dosé à ${C} mg/ml. Quel volume prélever (ml) ?`,a:r,u:'ml',tol:Math.max(.05,r*.02),s:`${fmt(D)} × ${W} = ${fmt(D*W)} mg, puis ${fmt(D*W)} ÷ ${C} = ${fmt(r)} ml`}},
+ ()=>{const D=pick([1,2,3,4,5]),M=pick([50,100]),r=D*50/M;return{q:`Seringue de 50 ml contenant ${M} mg. Prescription : ${D} mg/h. Quel débit du pousse-seringue (ml/h) ?`,a:r,u:'ml/h',tol:.05,s:`Concentration : ${M} ÷ 50 = ${fmt(M/50)} mg/ml → ${D} ÷ ${fmt(M/50)} = ${fmt(r)} ml/h`}},
+ ()=>{const mg=pick([0.25,0.5,1.5,2,2.5]),r=mg*1000;return{q:`Convertis ${fmt(mg)} mg en microgrammes (µg).`,a:r,u:'µg',tol:.5,s:`1 mg = 1 000 µg → ${fmt(mg)} × 1 000 = ${fmt(r)} µg`}}
+];
+let Q=null,answered=false;
+function newQ(){Q=pick(GEN)();answered=false;$('qTxt').textContent=Q.q;$('qA').value='';$('qFb').textContent='';$('qFb').className='fb';$('qSol').textContent='';$('qA').placeholder='Réponse en '+Q.u;renderScore()}
+function renderScore(){$('qScore').textContent=S.quiz.tot?`Score : ${S.quiz.ok} / ${S.quiz.tot} bonnes réponses`:'Des exercices tirés au hasard, comme aux évaluations.'}
+$('qF').addEventListener('submit',e=>{e.preventDefault();const raw=$('qA').value.trim();if(!raw){toast('Écris ta réponse');return}
+  const ok=Math.abs(num(raw)-Q.a)<=Q.tol;
+  if(!answered){S.quiz.tot++;if(ok)S.quiz.ok++;answered=true;save()}
+  $('qFb').className='fb '+(ok?'ok':'ko');
+  $('qFb').textContent=ok?pick(['Bravo, c’est juste !','Parfait, future diplômée !','Exact. Tu gères !']):'Pas tout à fait. Regarde la solution :';
+  $('qSol').textContent=ok?Q.s:Q.s;renderScore()});
+$('qNext').addEventListener('click',newQ);
+$('qShow').addEventListener('click',()=>{$('qSol').textContent=Q.s;if(!answered){answered=true;S.quiz.tot++;save();renderScore()}});
+
+/* ---------- Notes ---------- */
+function renderNotes(){
+  list('bag',S.bag,'bag');
+  if(document.activeElement!==$('notes'))$('notes').value=S.notes||'';
+}
+function renderShare(){
+  const w=monthDays().filter(x=>x.k&&x.k!=='R');
+  $('share').value=`Mon planning · ${mName(cur)}\n`+(w.length?w.map(({dt,k})=>`${dt.toLocaleDateString('fr-FR',{weekday:'short',day:'2-digit',month:'2-digit'})} · ${P[k].n}${P[k].h?' '+P[k].h:''}`).join('\n'):'(rien de prévu)');
+}
+bindList('bag','bag',()=>S.bag);
+$('bagF').addEventListener('submit',e=>{e.preventDefault();const t=$('bagI').value.trim();if(!t)return;S.bag.push({t,done:false});$('bagI').value='';save();renderNotes()});
+$('bagReset').addEventListener('click',()=>{S.bag.forEach(b=>b.done=false);save();renderNotes()});
+$('notes').addEventListener('input',e=>{S.notes=e.target.value;save()});
+$('dar').addEventListener('click',()=>{const n=$('notes'),tpl=(n.value&&!n.value.endsWith('\n')?'\n\n':'')+`Cible : \nDonnées : \nActions : \nRésultats : \n`;n.value+=tpl;S.notes=n.value;save();n.focus()});
+$('shareCopy').addEventListener('click',()=>copy($('share').value,'Planning copié, colle-le dans WhatsApp'));
+$('bkCopy').addEventListener('click',()=>{const code='TITA1:'+btoa(unescape(encodeURIComponent(JSON.stringify(S))));copy(code,'Code de sauvegarde copié')});
+$('bkRestore').addEventListener('click',()=>{
+  const t=$('bkIn').value.trim();if(!t.startsWith('TITA1:')){toast('Ce code ne ressemble pas à une sauvegarde');return}
+  try{const d=JSON.parse(decodeURIComponent(escape(atob(t.slice(6)))));if(!d||typeof d!=='object'||!d.plan)throw 0;S=Object.assign(fresh(),d);S.first=false;applyDur();save();$('bkIn').value='';renderAll();toast('Données restaurées')}
+  catch(e){toast('Code illisible, vérifie qu’il est complet')}
+});
+
+/* ---------- Navigation ---------- */
+const VIEWS=['home','plan','stage','calc','notes'];
+function go(v,push){if(!VIEWS.includes(v))v='home';
+  document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('on',x.dataset.v===v));
+  document.querySelectorAll('.view').forEach(x=>x.classList.toggle('on',x.id==='v-'+v));
+  window.scrollTo(0,0);if(push){try{history.replaceState(null,'',v==='home'?location.pathname+location.search:'#'+v)}catch(e){}}}
+$('nav').addEventListener('click',e=>{const b=e.target.closest('[data-v]');if(b)go(b.dataset.v,true)});
+window.addEventListener('hashchange',()=>go(location.hash.slice(1)));
+
+function renderAll(){today=getToday();renderHome();renderPlan();renderStage();renderNotes()}
+
+/* nouveau mot quand elle revient après un moment */
+let hiddenAt=0;
+document.addEventListener('visibilitychange',()=>{
+  if(document.hidden){hiddenAt=Date.now();return}
+  if(hiddenAt&&Date.now()-hiddenAt>15*60*1000&&!S.first){renderAll();showLoveOverlay()}
+  hiddenAt=0;
+});
+
+renderAll();calc();newQ();go(location.hash.slice(1));
+if(S.first)showWelcome();else showLoveOverlay();
+if('serviceWorker' in navigator&&location.protocol==='https:'){navigator.serviceWorker.register('sw.js').catch(()=>{})}
+}
+</script>
+</body>
+</html>
