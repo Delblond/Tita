@@ -258,6 +258,7 @@ details summary{cursor:pointer;min-height:44px;display:flex;align-items:center;f
       <summary>Mes mots gardés</summary>
       <div id="favs"></div>
     </details>
+    <button id="homeIdea" style="width:100%;margin-top:4px">Une idée pour mon appli ?</button>
   </section>
 
   <!-- PLANNING -->
@@ -477,6 +478,20 @@ details summary{cursor:pointer;min-height:44px;display:flex;align-items:center;f
     <button id="bkRestore" style="margin-top:8px;width:100%">Restaurer</button>
     <p class="hint">Le code de sauvegarde contient tes données en clair : ne l'envoie à personne.</p>
 
+    <h2 id="ideaTitle">Une idée pour mon appli ?</h2>
+    <p class="hint" style="margin:-4px 0 8px">Écris ce que tu aimerais changer ou ajouter. Ton message part sur WhatsApp vers ton mari, et il le fera réaliser.</p>
+    <div class="card" id="ideaBox">
+      <div class="f2">
+        <label>Type<select id="ideaType"><option>Nouvelle fonction</option><option>Amélioration</option><option>Quelque chose ne marche pas</option><option>Médicament à ajouter</option></select></label>
+        <label>Où dans l’appli ?<select id="ideaWhere"><option>Partout</option><option>Accueil</option><option>Planning</option><option>Stage</option><option>Tournée</option><option>Médocs</option><option>Outils</option><option>Notes</option></select></label>
+        <label style="grid-column:1/-1">Ton idée<textarea id="ideaTxt" style="min-height:110px" placeholder="Ex. pouvoir noter la glycémie avant et après le repas…"></textarea></label>
+      </div>
+      <p class="hint">Pas d’information sur un patient dans ce message.</p>
+      <button class="rose" id="ideaSend" style="margin-top:8px;width:100%">Envoyer sur WhatsApp</button>
+      <button id="ideaCopy" style="margin-top:8px;width:100%">Copier le message</button>
+    </div>
+    <div id="ideaList"></div>
+
     <h2 id="secTitle">Sécurité</h2>
     <div class="card sec" id="secBox"></div>
   </section>
@@ -690,7 +705,7 @@ const $=id=>document.getElementById(id);
 const getToday=()=>{const t=new Date();t.setHours(0,0,0,0);return t};
 let today=getToday();
 
-function fresh(){return{first:true,plan:{},dur:{},stage:{lieu:'',service:'',tuteur:'',tel:'',debut:'',fin:''},obj:[],comp:COMP.map(()=>0),actes:ACTES.map(n=>({n,c:0})),ech:[],bag:BAG.map(t=>({t,done:false})),notes:'',love:{seen:[],fav:[],cur:null},quiz:{ok:0,tot:0},pat:[],tour:{},tips:{},sec:{delay:5}}}
+function fresh(){return{first:true,plan:{},dur:{},stage:{lieu:'',service:'',tuteur:'',tel:'',debut:'',fin:''},obj:[],comp:COMP.map(()=>0),actes:ACTES.map(n=>({n,c:0})),ech:[],bag:BAG.map(t=>({t,done:false})),notes:'',love:{seen:[],fav:[],cur:null},quiz:{ok:0,tot:0},pat:[],tour:{},tips:{},sec:{delay:5},ideas:[]}}
 let S=fresh();
 const ENC=KEY+'-enc';
 const CRYPTO_OK=!!(window.isSecureContext&&window.crypto&&crypto.subtle&&window.TextEncoder);
@@ -1096,7 +1111,8 @@ const TOOLS=[
  ['Planning à envoyer','envoyer whatsapp partager planning','notes','share'],
  ['Sauvegarde','sauvegarde restaurer code donnees','notes','bkCopy'],
  ['Sécurité et code','securite code verrou pin proteger','notes','secTitle'],
- ['Médicaments','medicaments medoc fiche dci','med','mQ']
+ ['Médicaments','medicaments medoc fiche dci','med','mQ'],
+ ['Une idée pour mon appli','idee amelioration suggestion demande bug probleme nouvelle fonction','notes','ideaTitle']
 ];
 function memoItems(){return [...document.querySelectorAll('#memo details')].map(d=>({id:d.id,t:d.querySelector('summary').textContent,x:d.textContent}))}
 let gQT=null;
@@ -1217,6 +1233,25 @@ $('lockForgot').addEventListener('click',e=>{
   try{localStorage.removeItem(ENC);localStorage.removeItem(KEY)}catch(x){}location.reload();
 });
 
+
+/* ---------- Idées pour l'appli ---------- */
+const APPV='5';
+function ideaMsg(){
+  const t=$('ideaTxt').value.trim();if(!t)return null;
+  const d=new Date();
+  return {t,type:$('ideaType').value,where:$('ideaWhere').value,
+    msg:`💡 Idée pour l’appli Tita\nType : ${$('ideaType').value}\nOnglet : ${$('ideaWhere').value}\n\n${t}\n\n(envoyé depuis l’appli, version ${APPV}, le ${d.toLocaleDateString('fr-FR')})`};
+}
+function keepIdea(o){S.ideas.unshift({d:nowStr(),type:o.type,where:o.where,t:o.t});S.ideas=S.ideas.slice(0,30);$('ideaTxt').value='';save();renderIdeas()}
+function renderIdeas(){
+  $('ideaList').innerHTML=S.ideas.length?'<h3 style="margin-top:10px">Mes idées envoyées</h3>'+S.ideas.map(i=>`<div class="tr"><small><span>${esc(shortDT(i.d))} · ${esc(i.type)} · ${esc(i.where)}</span></small><p>${esc(i.t)}</p></div>`).join(''):'';
+}
+$('ideaSend').addEventListener('click',()=>{const o=ideaMsg();if(!o){toast('Écris d’abord ton idée');return}
+  const a=document.createElement('a');a.href='https://wa.me/?text='+encodeURIComponent(o.msg);a.target='_blank';a.rel='noopener noreferrer';document.body.appendChild(a);a.click();a.remove();
+  keepIdea(o);toast('Choisis ton mari dans WhatsApp et envoie ❤')});
+$('ideaCopy').addEventListener('click',()=>{const o=ideaMsg();if(!o){toast('Écris d’abord ton idée');return}copy(o.msg,'Message copié : colle-le dans WhatsApp');keepIdea(o)});
+$('homeIdea').addEventListener('click',()=>{go('notes',true);setTimeout(()=>{const el=$('ideaBox');el.scrollIntoView({block:'center'});el.classList.remove('flash');void el.offsetWidth;el.classList.add('flash')},60)});
+
 /* ---------- Navigation ---------- */
 const VIEWS=['home','plan','stage','pat','med','calc','notes'];
 function go(v,push){if(!VIEWS.includes(v))v='home';
@@ -1226,7 +1261,7 @@ function go(v,push){if(!VIEWS.includes(v))v='home';
 $('nav').addEventListener('click',e=>{const b=e.target.closest('[data-v]');if(b)go(b.dataset.v,true)});
 window.addEventListener('hashchange',()=>go(location.hash.slice(1)));
 
-function renderAll(){today=getToday();if(!tDay)tDay=iso(today);renderHome();renderPlan();renderStage();renderPat();renderNotes();renderTips();renderSec()}
+function renderAll(){today=getToday();if(!tDay)tDay=iso(today);renderHome();renderPlan();renderStage();renderPat();renderNotes();renderTips();renderSec();renderIdeas()}
 
 /* nouveau mot quand elle revient après un moment */
 let hiddenAt=0;
