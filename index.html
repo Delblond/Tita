@@ -111,8 +111,8 @@ label{font-size:14px;color:var(--mut);display:grid;gap:4px}
 .sol{font-size:14px;color:var(--mut);margin-top:6px}
 .btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
 /* nav */
-nav{position:fixed;left:0;right:0;bottom:0;background:var(--bg);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(5,minmax(0,1fr));padding:4px 4px calc(4px + env(safe-area-inset-bottom));z-index:5}
-nav button{background:none;font-size:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-height:54px;color:var(--mut);padding:0 2px}
+nav{position:fixed;left:0;right:0;bottom:0;background:var(--bg);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(6,minmax(0,1fr));padding:4px 2px calc(4px + env(safe-area-inset-bottom));z-index:5}
+nav button{background:none;font-size:11px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-height:54px;color:var(--mut);padding:0 2px}
 nav button svg{width:22px;height:22px}
 nav button.on{color:var(--rose);font-weight:600}
 /* overlay */
@@ -129,6 +129,35 @@ nav button.on{color:var(--rose);font-weight:600}
 @keyframes beat{0%,100%{transform:scale(1)}15%{transform:scale(1.18)}30%{transform:scale(1)}45%{transform:scale(1.12)}}
 .toast{position:fixed;left:50%;bottom:100px;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:12px;opacity:0;transition:opacity .2s;pointer-events:none;z-index:20;max-width:90vw;text-align:center}
 .toast.on{opacity:1}
+/* patients */
+.dnav{display:flex;align-items:center;gap:8px;margin-bottom:10px}.dnav b{flex:1;text-align:center;font:700 18px Outfit,system-ui,sans-serif}
+.visit{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--line)}
+.visit input[type=checkbox]{width:26px;height:26px;min-height:0;flex:none;margin-top:4px;accent-color:var(--rose)}
+.visit .mid{flex:1}
+.visit .h{font:700 18px Outfit,system-ui,sans-serif;white-space:nowrap}
+.visit .pn{background:none;padding:0;min-height:0;font-weight:600;text-decoration:underline;text-underline-offset:3px;text-align:left}
+.visit .so{font-size:14px;color:var(--mut);display:block;margin-top:2px}
+.visit.done .h,.visit.done .so{opacity:.5}
+.visit .side{display:flex;gap:0;flex:none}
+.visit .side button{width:36px;min-height:40px;padding:0;background:none;color:var(--mut);font-size:16px}
+.pcard{display:flex;justify-content:space-between;align-items:center;gap:10px;width:100%;text-align:left;margin-bottom:6px;padding:12px 14px;min-height:56px}
+.pcard b{font:700 18px Outfit,system-ui,sans-serif}
+.pcard small{color:var(--mut);display:block;font-size:13px}
+.vig{background:var(--paper);color:var(--paperInk);border-radius:10px;padding:2px 8px;font-size:12px;white-space:nowrap;font-weight:600}
+.sheet{position:fixed;inset:0;background:var(--bg);z-index:8;overflow:auto;display:none;padding-bottom:40px}
+.sheet.on{display:block}
+.sheet .bar2{position:sticky;top:0;background:var(--blue);color:#fff;display:flex;align-items:center;gap:10px;padding:12px max(4vw,14px);z-index:1}
+.sheet .bar2 h2{margin:0;flex:1;font-size:24px}
+.sheet .bar2 button{background:rgba(255,255,255,.15);color:#fff}
+.f3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.tbl{overflow-x:auto;margin-top:10px}
+.tbl table{border-collapse:collapse;width:100%;font-size:14px}
+.tbl th,.tbl td{padding:6px 8px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
+.tbl th:first-child,.tbl td:first-child{text-align:left}
+.tbl th{color:var(--mut);font-weight:600;font-size:12px}
+.tr{padding:10px 0;border-bottom:1px solid var(--line)}
+.tr small{color:var(--mut);display:flex;justify-content:space-between;align-items:center}
+.tr p{margin:4px 0 0;white-space:pre-wrap}
 details summary{cursor:pointer;min-height:44px;display:flex;align-items:center;font-weight:600}
 @media(prefers-reduced-motion:reduce){.beat{animation:none}.toast{transition:none}}
 </style>
@@ -148,6 +177,7 @@ details summary{cursor:pointer;min-height:44px;display:flex;align-items:center;f
     <div class="today" id="todayT"></div>
     <div id="countBox"></div>
     <div id="stageProg"></div>
+    <div id="tourHome"></div>
     <h2>Prochaines échéances</h2>
     <div id="echList"></div>
     <details class="card" style="margin-top:16px;padding:6px 16px">
@@ -274,6 +304,25 @@ details summary{cursor:pointer;min-height:44px;display:flex;align-items:center;f
   </section>
 
   <!-- NOTES -->
+  <section class="view" id="v-pat">
+    <p class="warn">Secret professionnel : utilise seulement des initiales ou un surnom (ex. « Mme B. »). Jamais de nom complet, d'adresse ni de n° de sécu. Tout reste sur ce téléphone.</p>
+    <h2 style="margin-top:6px">Ma tournée</h2>
+    <div class="dnav"><button class="ico" id="tPrev" aria-label="Jour précédent">‹</button><b id="tDate"></b><button class="ico" id="tNext" aria-label="Jour suivant">›</button></div>
+    <div id="tList"></div>
+    <form class="card" id="tF" style="margin-top:12px">
+      <div class="f2">
+        <label>Patient<select id="tP"></select></label>
+        <label>Heure<input type="time" id="tH"></label>
+        <label style="grid-column:1/-1">Soins à faire<input id="tS" placeholder="Ex. pansement, injection, glycémie"></label>
+      </div>
+      <button class="pri" style="margin-top:10px;width:100%">Ajouter à la tournée</button>
+    </form>
+    <h2>Mes patients</h2>
+    <div id="pList"></div>
+    <form class="add" id="pF"><input id="pN" placeholder="Initiales ou surnom (ex. Mme B.)" maxlength="30"><button class="pri">Créer</button></form>
+    <button id="pClear" style="margin-top:14px;width:100%">Fin de stage : effacer tous les patients</button>
+  </section>
+
   <section class="view" id="v-notes">
     <h2>Mon sac de stage</h2>
     <div id="bag"></div>
@@ -303,10 +352,12 @@ details summary{cursor:pointer;min-height:44px;display:flex;align-items:center;f
   <button data-v="plan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Planning</button>
   <button data-v="stage"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V3h6v1M12 9v6M9 12h6"/></svg>Stage</button>
   <button data-v="calc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 7h8M8 12h2M14 12h2M8 16h2M14 16h2"/></svg>Calculs</button>
+  <button data-v="pat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="8" r="3.5"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><path d="M17 8v6M14 11h6"/></svg>Tournée</button>
   <button data-v="notes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3h9l4 4v14H6z"/><path d="M9 12h7M9 16h7"/></svg>Notes</button>
 </nav>
 
 <div class="ov" id="ov" role="dialog" aria-modal="true"><div class="box" id="ovBox"></div></div>
+<div class="sheet" id="sheet" role="dialog" aria-modal="true"></div>
 <div class="toast" id="toast" role="status"></div>
 
 <script>
@@ -395,7 +446,7 @@ const $=id=>document.getElementById(id);
 const getToday=()=>{const t=new Date();t.setHours(0,0,0,0);return t};
 let today=getToday();
 
-function fresh(){return{first:true,plan:{},dur:{},stage:{lieu:'',service:'',tuteur:'',tel:'',debut:'',fin:''},obj:[],comp:COMP.map(()=>0),actes:ACTES.map(n=>({n,c:0})),ech:[],bag:BAG.map(t=>({t,done:false})),notes:'',love:{seen:[],fav:[],cur:null},quiz:{ok:0,tot:0}}}
+function fresh(){return{first:true,plan:{},dur:{},stage:{lieu:'',service:'',tuteur:'',tel:'',debut:'',fin:''},obj:[],comp:COMP.map(()=>0),actes:ACTES.map(n=>({n,c:0})),ech:[],bag:BAG.map(t=>({t,done:false})),notes:'',love:{seen:[],fav:[],cur:null},quiz:{ok:0,tot:0},pat:[],tour:{}}}
 let S=fresh();
 try{const raw=localStorage.getItem(KEY);if(raw)S=Object.assign(fresh(),JSON.parse(raw))}catch(e){}
 function applyDur(){for(const k in P){const base={M:7.5,S:7.5,J:12,N:10,I:7,R:0,A:0}[k];P[k].d=S.dur&&S.dur[k]!=null?num(S.dur[k]):base}}
@@ -451,7 +502,7 @@ $('ov').addEventListener('click',e=>{
     S.first=false;save();renderAll();showLoveOverlay();
   }
 });
-document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('ov').classList.contains('on')&&!S.first)$('ov').classList.remove('on')});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('sheet').classList.contains('on')){closeSheet();return}if(e.key==='Escape'&&$('ov').classList.contains('on')&&!S.first)$('ov').classList.remove('on')});
 
 /* ---------- Accueil ---------- */
 const days=d=>Math.round((d-today)/864e5);
@@ -595,8 +646,85 @@ $('bkRestore').addEventListener('click',()=>{
   catch(e){toast('Code illisible, vérifie qu’il est complet')}
 });
 
+
+/* ---------- Tournée & patients ---------- */
+let tDay=null,openPid=null;
+const pById=id=>S.pat.find(p=>p.id===id);
+const nowStr=()=>{const d=new Date();return iso(d)+' '+pad(d.getHours())+':'+pad(d.getMinutes())};
+const shortDT=s=>{if(!s)return'';const [d,t]=s.split(' ');const x=pd(d);return x?x.toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit'})+(t?' '+t:''):s};
+function tourOf(day){return S.tour[day]||(S.tour[day]=[])}
+function renderPat(){
+  const dd=pd(tDay);$('tDate').textContent=(tDay===iso(today)?"Aujourd’hui · ":'')+dd.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'});
+  const L=S.tour[tDay]||[];
+  $('tList').innerHTML=L.length?L.map((v,i)=>{const p=pById(v.pid);return `<div class="visit${v.done?' done':''}"><input type="checkbox" data-tv="${i}" ${v.done?'checked':''} aria-label="Visite faite"><div class="mid"><span class="h">${esc(v.h||'--:--')}</span> <button class="pn" data-open="${p?esc(p.id):''}">${p?esc(p.nom):'Patient supprimé'}</button>${p&&p.vig?' <span class="vig">Vigilance</span>':''}<span class="so">${esc(v.soins||'')}</span></div><div class="side"><button data-up="${i}" aria-label="Monter">▲</button><button data-dn="${i}" aria-label="Descendre">▼</button><button data-rm="${i}" aria-label="Retirer">✕</button></div></div>`}).join('')+`<p class="hint">${L.filter(v=>v.done).length} visite(s) faite(s) sur ${L.length}</p>`:'<p class="hint">Aucune visite ce jour-là. Ajoute-les ci-dessous.</p>';
+  $('tP').innerHTML=S.pat.length?S.pat.map(p=>`<option value="${esc(p.id)}">${esc(p.nom)}</option>`).join(''):'<option value="">Crée d’abord un patient</option>';
+  $('pList').innerHTML=S.pat.length?S.pat.map(p=>{const c=p.cst&&p.cst[0];return `<button class="pcard" data-open="${esc(p.id)}"><span><b>${esc(p.nom)}</b><small>${esc([p.age?p.age+' ans':'',p.soins].filter(Boolean).join(' · ').slice(0,60))}${c?' · constantes du '+esc(shortDT(c.t)):''}</small></span>${p.vig?'<span class="vig">Vigilance</span>':''}</button>`}).join(''):'<p class="hint">Aucun patient pour l’instant.</p>';
+  const T=S.tour[iso(today)]||[];
+  $('tourHome').innerHTML=T.length?`<div class="card" style="margin-top:12px"><h3>Tournée du jour</h3><div class="prog"><i style="width:${T.filter(v=>v.done).length/T.length*100}%"></i></div><small style="color:var(--mut)">${T.filter(v=>v.done).length} visite(s) faite(s) sur ${T.length}</small></div>`:'';
+}
+$('tPrev').onclick=()=>{const d=pd(tDay);d.setDate(d.getDate()-1);tDay=iso(d);renderPat()};
+$('tNext').onclick=()=>{const d=pd(tDay);d.setDate(d.getDate()+1);tDay=iso(d);renderPat()};
+$('tF').addEventListener('submit',e=>{e.preventDefault();const pid=$('tP').value;if(!pid||!pById(pid)){toast('Crée d’abord un patient');return}
+  const L=tourOf(tDay);L.push({pid,h:$('tH').value,soins:$('tS').value.trim(),done:false});L.sort((a,b)=>(a.h||'99').localeCompare(b.h||'99'));
+  $('tS').value='';$('tH').value='';save();renderPat();toast('Visite ajoutée')});
+$('tList').addEventListener('change',e=>{const i=e.target.dataset.tv;if(i==null)return;tourOf(tDay)[+i].done=e.target.checked;save();renderPat()});
+$('tList').addEventListener('click',e=>{const L=tourOf(tDay),b=e.target.closest('button');if(!b)return;
+  if(b.dataset.open){openSheet(b.dataset.open);return}
+  if(b.dataset.up!=null){const i=+b.dataset.up;if(i>0)[L[i-1],L[i]]=[L[i],L[i-1]]}
+  else if(b.dataset.dn!=null){const i=+b.dataset.dn;if(i<L.length-1)[L[i+1],L[i]]=[L[i],L[i+1]]}
+  else if(b.dataset.rm!=null)L.splice(+b.dataset.rm,1);
+  save();renderPat()});
+$('pF').addEventListener('submit',e=>{e.preventDefault();const n=$('pN').value.trim();if(!n)return;
+  const p={id:'p'+Date.now().toString(36)+Math.floor(Math.random()*1e4),nom:n,age:'',soins:'',vig:'',cst:[],tr:[]};S.pat.push(p);$('pN').value='';save();renderPat();openSheet(p.id)});
+$('pList').addEventListener('click',e=>{const b=e.target.closest('[data-open]');if(b)openSheet(b.dataset.open)});
+let pc=0;$('pClear').addEventListener('click',e=>{if(!S.pat.length){toast('Aucun patient à effacer');return}
+  if(!pc){pc=1;e.target.textContent='Touche encore pour tout effacer';setTimeout(()=>{pc=0;e.target.textContent='Fin de stage : effacer tous les patients'},3000);return}
+  pc=0;e.target.textContent='Fin de stage : effacer tous les patients';S.pat=[];S.tour={};save();renderPat();renderHome();toast('Patients effacés')});
+
+const CF=[['ta','TA','12/8','text'],['fc','Pouls','bpm','decimal'],['temp','T°','°C','decimal'],['spo2','SpO₂','%','decimal'],['gly','Glycémie','g/l','decimal'],['eva','Douleur','EVA /10','decimal']];
+function openSheet(id){openPid=id;renderSheet();$('sheet').classList.add('on');$('sheet').scrollTop=0;try{history.pushState({sh:1},'')}catch(e){}}
+function hideSheet(){$('sheet').classList.remove('on');openPid=null;renderPat()}
+function closeSheet(){if(history.state&&history.state.sh){try{history.back();return}catch(e){}}hideSheet()}
+window.addEventListener('popstate',()=>{if($('sheet').classList.contains('on'))hideSheet()});
+function renderSheet(){
+  const p=pById(openPid);if(!p){closeSheet();return}
+  const rows=p.cst.slice(0,15);
+  $('sheet').innerHTML=`<div class="bar2"><h2>${esc(p.nom)}</h2><button id="shClose">Fermer</button></div><main>
+  <div class="card" style="margin-top:14px"><div class="f2">
+    <label>Initiales ou surnom<input data-pf="nom" value="${esc(p.nom)}" maxlength="30"></label>
+    <label>Âge<input data-pf="age" inputmode="numeric" value="${esc(p.age)}"></label>
+    <label style="grid-column:1/-1">Soins habituels<textarea data-pf="soins" style="min-height:70px" placeholder="Ex. pansement ulcère jambe G 1 jour sur 2, insuline matin">${esc(p.soins)}</textarea></label>
+    <label style="grid-column:1/-1">Points de vigilance<textarea data-pf="vig" style="min-height:60px" placeholder="Ex. allergie, risque de chute, anticoagulant">${esc(p.vig)}</textarea></label>
+  </div></div>
+  <h2>Constantes</h2>
+  <form class="card" id="cF"><div class="f3">${CF.map(c=>`<label>${c[1]}<input id="c_${c[0]}" inputmode="${c[3]}" placeholder="${c[2]}" autocomplete="off"></label>`).join('')}</div>
+  <button class="pri" style="margin-top:10px;width:100%">Enregistrer les constantes</button></form>
+  ${rows.length?`<div class="tbl"><table><thead><tr><th>Date</th>${CF.map(c=>`<th>${c[1]}</th>`).join('')}<th></th></tr></thead><tbody>${rows.map((r,i)=>`<tr><td>${esc(shortDT(r.t))}</td>${CF.map(c=>`<td>${esc(r[c[0]]||'')}</td>`).join('')}<td><button class="x" data-cdel="${i}" aria-label="Supprimer" style="min-height:32px;width:32px;background:none;color:var(--mut);padding:0">✕</button></td></tr>`).join('')}</tbody></table></div><p class="hint">Les plus récentes en haut.</p>`:'<p class="hint">Aucune constante notée.</p>'}
+  <h2>Transmissions</h2>
+  <textarea id="trI" style="min-height:110px" placeholder="Ce qui a été fait, observé, à surveiller…"></textarea>
+  <div class="btns"><button id="trDar">Modèle cible / données / actions / résultats</button><button class="pri" id="trAdd">Ajouter</button></div>
+  <div id="trL" style="margin-top:8px">${p.tr.length?p.tr.map((t,i)=>`<div class="tr"><small><span>${esc(shortDT(t.t))}</span><button class="x" data-tdel="${i}" aria-label="Supprimer" style="min-height:32px;width:32px;background:none;color:var(--mut);padding:0">✕</button></small><p>${esc(t.txt)}</p></div>`).join(''):'<p class="hint">Aucune transmission.</p>'}</div>
+  <button id="pDel" style="margin-top:24px;width:100%">Supprimer ce patient</button>
+  </main>`;
+}
+let pd2=0;
+$('sheet').addEventListener('input',e=>{const f=e.target.dataset.pf;if(!f)return;const p=pById(openPid);if(!p)return;p[f]=e.target.value;if(f==='nom')$('sheet').querySelector('.bar2 h2').textContent=p.nom||'Patient';save()});
+$('sheet').addEventListener('submit',e=>{if(e.target.id!=='cF')return;e.preventDefault();const p=pById(openPid);if(!p)return;
+  const r={t:nowStr()};let any=false;for(const c of CF){const v=$('c_'+c[0]).value.trim();if(v){r[c[0]]=v;any=true}}
+  if(!any){toast('Remplis au moins une valeur');return}p.cst.unshift(r);save();renderSheet();toast('Constantes enregistrées')});
+$('sheet').addEventListener('click',e=>{const p=pById(openPid);const b=e.target.closest('button');if(!b)return;
+  if(b.id==='shClose'){if(p&&!p.nom.trim()){p.nom='Patient';save()}closeSheet();return}
+  if(!p)return;
+  if(b.dataset.cdel!=null){p.cst.splice(+b.dataset.cdel,1);save();renderSheet()}
+  else if(b.dataset.tdel!=null){p.tr.splice(+b.dataset.tdel,1);save();renderSheet()}
+  else if(b.id==='trDar'){const t=$('trI');t.value+=(t.value&&!t.value.endsWith('\n')?'\n':'')+'Cible : \nDonnées : \nActions : \nRésultats : ';t.focus()}
+  else if(b.id==='trAdd'){const v=$('trI').value.trim();if(!v){toast('Écris la transmission');return}p.tr.unshift({t:nowStr(),txt:v});save();renderSheet();toast('Transmission ajoutée')}
+  else if(b.id==='pDel'){if(!pd2){pd2=1;b.textContent='Touche encore pour supprimer';setTimeout(()=>{pd2=0;const x=$('pDel');if(x)x.textContent='Supprimer ce patient'},3000);return}
+    pd2=0;S.pat=S.pat.filter(x=>x.id!==p.id);for(const d in S.tour)S.tour[d]=S.tour[d].filter(v=>v.pid!==p.id);save();closeSheet();renderHome();toast('Patient supprimé')}
+});
+
 /* ---------- Navigation ---------- */
-const VIEWS=['home','plan','stage','calc','notes'];
+const VIEWS=['home','plan','stage','calc','pat','notes'];
 function go(v,push){if(!VIEWS.includes(v))v='home';
   document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('on',x.dataset.v===v));
   document.querySelectorAll('.view').forEach(x=>x.classList.toggle('on',x.id==='v-'+v));
@@ -604,7 +732,7 @@ function go(v,push){if(!VIEWS.includes(v))v='home';
 $('nav').addEventListener('click',e=>{const b=e.target.closest('[data-v]');if(b)go(b.dataset.v,true)});
 window.addEventListener('hashchange',()=>go(location.hash.slice(1)));
 
-function renderAll(){today=getToday();renderHome();renderPlan();renderStage();renderNotes()}
+function renderAll(){today=getToday();if(!tDay)tDay=iso(today);renderHome();renderPlan();renderStage();renderPat();renderNotes()}
 
 /* nouveau mot quand elle revient après un moment */
 let hiddenAt=0;
