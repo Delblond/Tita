@@ -6,6 +6,9 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Tita">
 <meta name="theme-color" content="#1d4e79">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self'; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<meta name="robots" content="noindex, nofollow">
 <title>Infirmière Tita</title>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon-192.png">
@@ -111,8 +114,8 @@ label{font-size:14px;color:var(--mut);display:grid;gap:4px}
 .sol{font-size:14px;color:var(--mut);margin-top:6px}
 .btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
 /* nav */
-nav{position:fixed;left:0;right:0;bottom:0;background:var(--bg);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(6,minmax(0,1fr));padding:4px 2px calc(4px + env(safe-area-inset-bottom));z-index:5}
-nav button{background:none;font-size:11px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-height:54px;color:var(--mut);padding:0 2px}
+nav{position:fixed;left:0;right:0;bottom:0;background:var(--bg);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(7,minmax(0,1fr));padding:4px 1px calc(4px + env(safe-area-inset-bottom));z-index:5}
+nav button{background:none;font-size:10.5px;letter-spacing:-.1px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-height:54px;color:var(--mut);padding:0 2px}
 nav button svg{width:22px;height:22px}
 nav button.on{color:var(--rose);font-weight:600}
 /* overlay */
@@ -158,6 +161,75 @@ nav button.on{color:var(--rose);font-weight:600}
 .tr{padding:10px 0;border-bottom:1px solid var(--line)}
 .tr small{color:var(--mut);display:flex;justify-content:space-between;align-items:center}
 .tr p{margin:4px 0 0;white-space:pre-wrap}
+/* recherche, médicaments, mémo, astuces, verrou, impression */
+header{position:relative}
+.hsearch{position:absolute;top:18px;right:max(4vw,16px);width:48px;height:48px;padding:0;border-radius:50%;background:rgba(255,255,255,.14);color:#fff;display:flex;align-items:center;justify-content:center}
+.hsearch svg{width:24px;height:24px}
+header h1{padding-right:56px}
+.tip{display:flex;gap:10px;align-items:flex-start;background:light-dark(#eef5fb,#132b42);border-radius:14px;padding:12px 12px 12px 14px;margin:14px 0 4px;font-size:14px;line-height:1.45}
+.tip b{color:var(--blue)}:root[data-theme=dark] .tip b{color:#9cc6ee}
+.tip span{flex:1}
+.tip button{min-height:36px;padding:0 10px;font-size:13px;background:none;color:var(--mut);flex:none}
+.sbox{position:relative;margin:14px 0 10px}
+.sbox input{padding-left:44px;font-size:17px;min-height:50px;border-radius:14px}
+.sbox svg{position:absolute;left:13px;top:13px;width:24px;height:24px;color:var(--mut);pointer-events:none}
+.mitem{display:block;width:100%;text-align:left;padding:10px 12px;margin-bottom:6px;min-height:52px}
+.mitem b{font:700 17px Outfit,system-ui,sans-serif}
+.mitem small{display:block;color:var(--mut);font-size:13px;line-height:1.35}
+.mdet{background:var(--card);border-radius:16px;padding:16px;margin:6px 0 14px}
+.mdet h3{font-size:24px;margin:0}
+.mdet .brand{color:var(--mut);font-size:14px;margin:4px 0 2px}
+.mdet .btns button{background:var(--bg);border:1px solid var(--line)}
+.mdet .cls{display:inline-block;background:var(--blue);color:#fff;border-radius:999px;padding:3px 10px;font-size:13px;margin:6px 0 4px}
+.msec{margin-top:12px}
+.msec h4{margin:0 0 3px;font:700 15px Outfit,system-ui,sans-serif;color:var(--blue)}
+:root[data-theme=dark] .msec h4{color:#9cc6ee}
+.msec p{margin:0;font-size:15px;line-height:1.5}
+.msec.alert{background:var(--paper);color:var(--paperInk);border-radius:12px;padding:10px 12px}
+.msec.alert h4{color:inherit}
+.letter{font:700 14px Outfit,system-ui,sans-serif;color:var(--mut);margin:12px 0 4px}
+.memo details{background:var(--card);border-radius:14px;margin-bottom:8px;padding:2px 14px}
+.memo details[open]{padding-bottom:12px}
+.memo summary{font-weight:600}
+.memo p,.memo li{font-size:15px;line-height:1.5;margin:4px 0}
+.memo ul{padding-left:20px;margin:4px 0}
+.memo table{border-collapse:collapse;width:100%;font-size:14px}
+.memo td{border-bottom:1px solid var(--line);padding:5px 4px;vertical-align:top}
+.memo td:last-child{text-align:right;white-space:nowrap}
+.srch{position:fixed;inset:0;background:var(--bg);z-index:9;display:none;overflow:auto}
+.srch.on{display:block}
+.srch .top2{position:sticky;top:0;background:var(--bg);padding:12px max(4vw,14px) 4px;display:flex;gap:8px;align-items:center;border-bottom:1px solid var(--line);z-index:1}
+.srch .top2 .sbox{flex:1;margin:0 0 8px}
+.srch .grp{font:700 13px Outfit,system-ui,sans-serif;color:var(--mut);margin:16px 0 6px}
+.hit{display:block;width:100%;text-align:left;padding:10px 12px;margin-bottom:6px;min-height:50px}
+.hit b{font-weight:600}
+.hit small{display:block;color:var(--mut);font-size:13px;line-height:1.35}
+mark{background:#ffe08a;color:#10202f;border-radius:3px;padding:0 1px}
+.flash{animation:flash 1.6s ease-out}
+@keyframes flash{0%{box-shadow:0 0 0 4px var(--rose)}100%{box-shadow:0 0 0 0 transparent}}
+.lock{position:fixed;inset:0;background:var(--blue);color:#fff;z-index:30;display:none;flex-direction:column;align-items:center;justify-content:center;padding:24px;text-align:center}
+.lock.on{display:flex}
+.lock h2{color:#fff;margin:10px 0 4px;font-size:28px}
+.lock p{margin:0 0 16px;color:#d3e0ee}
+.lock input{max-width:240px;text-align:center;font-size:28px;letter-spacing:10px;background:#fff;color:#10243a;border:0}
+.lock button{margin-top:12px;min-width:240px}
+.lock .err{color:#ffd0da;min-height:24px;margin-top:10px;font-weight:600}
+.lock .forgot{background:none;color:#cfe0f0;font-size:14px;text-decoration:underline;min-width:0}
+.sec .row{padding:8px 0}
+#printArea{display:none}
+@media print{
+  body{padding:0!important;background:#fff!important;color:#000!important}
+  body.printing>*:not(#printArea){display:none!important}
+  body.printing #printArea{display:block!important;font:12pt/1.45 Inter,Arial,sans-serif;color:#000}
+  #printArea h1{font:700 20pt Outfit,Arial,sans-serif;margin:0 0 4pt}
+  #printArea h2{font:700 14pt Outfit,Arial,sans-serif;margin:14pt 0 4pt}
+  #printArea .sub{color:#444;margin:0 0 8pt}
+  #printArea table{border-collapse:collapse;width:100%;margin-top:4pt}
+  #printArea th,#printArea td{border:1px solid #999;padding:4pt 6pt;text-align:left;vertical-align:top}
+  #printArea th{background:#eee}
+  #printArea .box{border:1px solid #999;padding:6pt 8pt;margin:6pt 0}
+  #printArea .pfoot{margin-top:16pt;color:#555;font-size:9pt}
+}
 details summary{cursor:pointer;min-height:44px;display:flex;align-items:center;font-weight:600}
 @media(prefers-reduced-motion:reduce){.beat{animation:none}.toast{transition:none}}
 </style>
@@ -166,6 +238,7 @@ details summary{cursor:pointer;min-height:44px;display:flex;align-items:center;f
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><symbol id="h" viewBox="0 0 24 24"><path d="M12 21s-7.5-4.6-9.6-9.3C.9 8.3 3 4.5 6.7 4.5c2.2 0 3.6 1.3 4.3 2.5h2c.7-1.2 2.1-2.5 4.3-2.5 3.7 0 5.8 3.8 4.3 7.2C19.5 16.4 12 21 12 21z" fill="#ff6f91"/><path d="M6.6 7.2c-1.5.2-2.4 1.6-2.1 3.1" stroke="#fff" stroke-opacity=".6" stroke-width="1.4" fill="none" stroke-linecap="round"/></symbol></defs></svg>
 
 <header>
+  <button class="hsearch" id="openSearch" aria-label="Rechercher dans l’appli"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 21 21"/></svg></button>
   <h1 id="hello">Bonjour Tita</h1>
   <p id="hdate"></p>
 </header>
@@ -174,6 +247,7 @@ details summary{cursor:pointer;min-height:44px;display:flex;align-items:center;f
   <!-- ACCUEIL -->
   <section class="view on" id="v-home">
     <div class="note" id="note"></div>
+    <div class="tip" data-tip="home"></div>
     <div class="today" id="todayT"></div>
     <div id="countBox"></div>
     <div id="stageProg"></div>
@@ -188,6 +262,7 @@ details summary{cursor:pointer;min-height:44px;display:flex;align-items:center;f
 
   <!-- PLANNING -->
   <section class="view" id="v-plan">
+    <div class="tip" data-tip="plan"></div>
     <div class="mhead">
       <button class="ico" id="mPrev" aria-label="Mois précédent">‹</button>
       <h2 id="mTitle"></h2>
@@ -196,6 +271,7 @@ details summary{cursor:pointer;min-height:44px;display:flex;align-items:center;f
     <div class="grid" id="cal"></div>
     <div class="pal" id="pal"></div>
     <p class="hint">Choisis un poste, puis touche les jours pour le poser. « Gomme » pour effacer.</p>
+    <button id="printPlan" style="margin-top:10px;width:100%">Imprimer le planning du mois</button>
     <h2 id="hTitle">Heures du mois</h2>
     <div class="stats" id="stats"></div>
     <h3 style="margin-top:16px">Par semaine</h3>
@@ -208,6 +284,7 @@ details summary{cursor:pointer;min-height:44px;display:flex;align-items:center;f
 
   <!-- STAGE -->
   <section class="view" id="v-stage">
+    <div class="tip" data-tip="stage"></div>
     <h2>Mon stage</h2>
     <div class="card">
       <div class="f2">
@@ -245,6 +322,7 @@ details summary{cursor:pointer;min-height:44px;display:flex;align-items:center;f
 
   <!-- CALCULS -->
   <section class="view" id="v-calc">
+    <div class="tip" data-tip="calc"></div>
     <p class="warn">Aide au calcul. Toujours vérifier avec la prescription, le protocole du service et ton infirmier référent.</p>
     <div class="card">
       <h3>Débit de perfusion</h3>
@@ -301,14 +379,66 @@ details summary{cursor:pointer;min-height:44px;display:flex;align-items:center;f
       <div class="sol" id="qSol"></div>
       <div class="btns"><button id="qNext">Question suivante</button><button id="qShow">Voir la solution</button></div>
     </div>
+    <h2 id="memoTitle">Mémo infirmier</h2>
+    <p class="hint" style="margin:-4px 0 10px">Repères généraux chez l'adulte. Les protocoles du service et la prescription priment toujours.</p>
+    <div class="memo" id="memo">
+      <details id="memo-constantes"><summary>Constantes normales (adulte au repos)</summary>
+        <table><tr><td>Pouls</td><td>60 à 100 /min</td></tr><tr><td>Fréquence respiratoire</td><td>12 à 20 /min</td></tr><tr><td>Tension artérielle</td><td>&lt; 140/90 mmHg</td></tr><tr><td>SpO₂ à l'air</td><td>≥ 95 %</td></tr><tr><td>Température</td><td>36,5 à 37,5 °C</td></tr><tr><td>Fièvre</td><td>≥ 38 °C</td></tr><tr><td>Glycémie à jeun</td><td>0,70 à 1,10 g/l</td></tr><tr><td>Hypoglycémie</td><td>&lt; 0,70 g/l</td></tr><tr><td>Diurèse</td><td>≥ 0,5 ml/kg/h</td></tr></table>
+        <p>Chez l'insuffisant respiratoire chronique, la SpO₂ visée est souvent plus basse (par exemple 88 à 92 %) : suivre la prescription.</p></details>
+      <details id="memo-hypo"><summary>Hypoglycémie : conduite à tenir</summary>
+        <p><b>Patient conscient</b> : 15 g de sucre (3 morceaux de sucre ou un petit verre de jus de fruits, environ 150 ml). Contrôler la glycémie 15 min après et recommencer si elle reste sous 0,70 g/l. Puis une collation si le repas est loin.</p>
+        <p><b>Patient inconscient ou qui ne peut pas avaler</b> : rien par la bouche, position latérale de sécurité, alerter. Glucagon ou glucosé 30 % IV selon la prescription ou le protocole.</p></details>
+      <details id="memo-glasgow"><summary>Score de Glasgow</summary>
+        <p><b>Yeux (Y)</b> : 4 spontanée · 3 au bruit · 2 à la douleur · 1 aucune</p>
+        <p><b>Verbal (V)</b> : 5 orienté · 4 confus · 3 mots inappropriés · 2 sons incompréhensibles · 1 aucune</p>
+        <p><b>Moteur (M)</b> : 6 obéit · 5 orienté à la douleur · 4 évitement · 3 flexion anormale · 2 extension · 1 aucune</p>
+        <p>Total de 3 à 15. Un score de 8 ou moins correspond à un coma : alerter immédiatement.</p></details>
+      <details id="memo-douleur"><summary>Évaluer la douleur</summary>
+        <p><b>EVA ou échelle numérique</b> : de 0 (pas de douleur) à 10 (pire douleur imaginable), quand le patient peut communiquer.</p>
+        <p><b>Algoplus</b> (personne âgée qui ne peut pas s'exprimer) : 5 items observés (visage, regard, plaintes, corps, comportement), 1 point par item présent. Un score de 2 ou plus signale une douleur.</p>
+        <p>Toujours réévaluer après un antalgique et noter le résultat.</p></details>
+      <details id="memo-sedation"><summary>Surveillance sous morphine</summary>
+        <p>Douleur, fréquence respiratoire, sédation, transit, mictions.</p>
+        <p><b>Échelle de sédation</b> (la plus utilisée) : 0 éveillé · 1 somnolent par moments, facile à réveiller · 2 somnolent la plupart du temps, réveillable à la voix · 3 somnolent, réveillable seulement en le touchant.</p>
+        <p>Sédation de 2 ou plus, ou fréquence respiratoire basse (souvent moins de 10 /min) : alerter, selon le protocole du service. L'antidote est la naloxone.</p></details>
+      <details id="memo-5b"><summary>Règle des 5 B (sécurité médicamenteuse)</summary>
+        <ul><li>le Bon patient</li><li>le Bon médicament</li><li>la Bonne dose</li><li>la Bonne voie</li><li>le Bon moment</li></ul>
+        <p>Pour les médicaments à haut risque (insuline, anticoagulants, potassium, morphiniques…) : double vérification, et ne jamais administrer un produit qu'on n'a pas préparé soi-même sans vérification.</p></details>
+      <details id="memo-calculs"><summary>Formules de calcul</summary>
+        <ul><li>Débit (ml/h) = volume (ml) ÷ durée (h)</li><li>Gouttes/min = volume (ml) × 20 ÷ durée (min), avec un perfuseur standard (1 ml = 20 gouttes)</li><li>Micro-perfuseur : 1 ml = 60 microgouttes</li><li>1 % = 1 g pour 100 ml = 10 mg/ml</li><li>1 g = 1 000 mg · 1 mg = 1 000 µg</li></ul></details>
+      <details id="memo-transmissions"><summary>Transmissions ciblées</summary>
+        <p><b>Cible</b> : le problème ou l'événement (douleur, chute, refus de soin…).</p>
+        <p><b>Données</b> : ce que tu as observé ou mesuré. <b>Actions</b> : ce que tu as fait. <b>Résultats</b> : l'effet obtenu et la réévaluation.</p></details>
+      <details id="memo-mains"><summary>Hygiène des mains</summary>
+        <p>Friction avec la solution hydro-alcoolique, 20 à 30 secondes, sur des mains sèches, ongles courts, sans bijoux.</p>
+        <p>Lavage à l'eau et au savon si les mains sont visiblement sales, ou en cas de Clostridioides difficile ou de gale.</p></details>
+      <details id="memo-aes"><summary>Accident d'exposition au sang (piqûre, projection)</summary>
+        <ul><li>Piqûre ou coupure : ne pas faire saigner. Nettoyer à l'eau et au savon, rincer, puis antiseptique pendant au moins 5 min (Dakin, eau de Javel diluée ou alcool à 70°).</li><li>Projection dans les yeux ou la bouche : rincer abondamment pendant au moins 5 min (sérum physiologique ou eau).</li><li>Consulter tout de suite le référent ou les urgences : un traitement préventif se décide au mieux dans les 4 heures.</li><li>Prévenir le tuteur et l'IFSI, et faire la déclaration d'accident.</li></ul></details>
+      <details id="memo-urgence"><summary>Urgence vitale</summary>
+        <p>Appeler le <b>15</b> (SAMU) ou le <b>112</b>.</p>
+        <p>Arrêt cardiaque : massage cardiaque à 100 à 120 compressions par minute, 30 compressions pour 2 insufflations, défibrillateur dès qu'il est disponible.</p></details>
+    </div>
+  </section>
+
+  <!-- MEDICAMENTS -->
+  <section class="view" id="v-med">
+    <div class="tip" data-tip="med"></div>
+    <div class="sbox"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 21 21"/></svg><input id="mQ" type="search" placeholder="Nom du médicament ou molécule" autocomplete="off" aria-label="Rechercher un médicament"></div>
+    <div id="mDet"></div>
+    <div id="mRes"></div>
+    <p class="warn">Fiches mémo pour t'aider en stage, rédigées à partir des informations générales sur ces médicaments. Elles ne remplacent ni la prescription, ni le RCP, ni l'avis du pharmacien ou de ton tuteur. Pour un médicament absent ou pour tout vérifier, consulte la base officielle :</p>
+    <p style="margin:0 0 8px"><a href="https://base-donnees-publique.medicaments.gouv.fr/" target="_blank" rel="noopener noreferrer">Base de données publique des médicaments</a></p>
+    <p style="margin:0"><a href="https://infomedicament.beta.gouv.fr/" target="_blank" rel="noopener noreferrer">Info Médicament (nouveau site officiel)</a></p>
   </section>
 
   <!-- NOTES -->
   <section class="view" id="v-pat">
     <p class="warn">Secret professionnel : utilise seulement des initiales ou un surnom (ex. « Mme B. »). Jamais de nom complet, d'adresse ni de n° de sécu. Tout reste sur ce téléphone.</p>
+    <div class="tip" data-tip="pat"></div>
     <h2 style="margin-top:6px">Ma tournée</h2>
     <div class="dnav"><button class="ico" id="tPrev" aria-label="Jour précédent">‹</button><b id="tDate"></b><button class="ico" id="tNext" aria-label="Jour suivant">›</button></div>
     <div id="tList"></div>
+    <button id="printTour" style="margin-top:8px;width:100%">Imprimer la tournée du jour</button>
     <form class="card" id="tF" style="margin-top:12px">
       <div class="f2">
         <label>Patient<select id="tP"></select></label>
@@ -324,6 +454,7 @@ details summary{cursor:pointer;min-height:44px;display:flex;align-items:center;f
   </section>
 
   <section class="view" id="v-notes">
+    <div class="tip" data-tip="notes"></div>
     <h2>Mon sac de stage</h2>
     <div id="bag"></div>
     <form class="add" id="bagF"><input id="bagI" placeholder="Ajouter quelque chose"><button class="pri">Ajouter</button></form>
@@ -344,6 +475,10 @@ details summary{cursor:pointer;min-height:44px;display:flex;align-items:center;f
     <button id="bkCopy" style="width:100%">Copier mon code de sauvegarde</button>
     <textarea id="bkIn" placeholder="Colle ici un code de sauvegarde pour tout restaurer" style="min-height:70px;margin-top:10px"></textarea>
     <button id="bkRestore" style="margin-top:8px;width:100%">Restaurer</button>
+    <p class="hint">Le code de sauvegarde contient tes données en clair : ne l'envoie à personne.</p>
+
+    <h2 id="secTitle">Sécurité</h2>
+    <div class="card sec" id="secBox"></div>
   </section>
 </main>
 
@@ -351,13 +486,27 @@ details summary{cursor:pointer;min-height:44px;display:flex;align-items:center;f
   <button class="on" data-v="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 20s-6.5-4-8.3-8C2.4 9 4.2 5.5 7.4 5.5c1.9 0 3.1 1.1 3.7 2.1h1.8c.6-1 1.8-2.1 3.7-2.1 3.2 0 5 3.5 3.7 6.5-1.8 4-8.3 8-8.3 8z"/></svg>Accueil</button>
   <button data-v="plan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Planning</button>
   <button data-v="stage"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V3h6v1M12 9v6M9 12h6"/></svg>Stage</button>
-  <button data-v="calc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 7h8M8 12h2M14 12h2M8 16h2M14 16h2"/></svg>Calculs</button>
   <button data-v="pat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="8" r="3.5"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><path d="M17 8v6M14 11h6"/></svg>Tournée</button>
+  <button data-v="med"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="3" y="8.5" width="18" height="7" rx="3.5" transform="rotate(-40 12 12)"/><path d="M9.3 8.8l5.4 6.4"/></svg>Médocs</button>
+  <button data-v="calc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 7h8M8 12h2M14 12h2M8 16h2M14 16h2"/></svg>Outils</button>
   <button data-v="notes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3h9l4 4v14H6z"/><path d="M9 12h7M9 16h7"/></svg>Notes</button>
 </nav>
 
 <div class="ov" id="ov" role="dialog" aria-modal="true"><div class="box" id="ovBox"></div></div>
 <div class="sheet" id="sheet" role="dialog" aria-modal="true"></div>
+<div class="srch" id="srch" role="dialog" aria-modal="true" aria-label="Recherche">
+  <div class="top2"><div class="sbox"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 21 21"/></svg><input id="gQ" type="search" placeholder="Chercher partout…" autocomplete="off" aria-label="Chercher partout"></div><button id="closeSearch" style="margin-bottom:8px">Fermer</button></div>
+  <main id="gRes"></main>
+</div>
+<div class="lock" id="lock" role="dialog" aria-modal="true" aria-label="Appli verrouillée">
+  <svg class="beat" aria-hidden="true"><use href="#h"/></svg>
+  <h2>Bonjour Tita</h2>
+  <p>Entre ton code pour ouvrir l’appli</p>
+  <form id="lockF" style="display:flex;flex-direction:column;align-items:center;width:100%"><input id="lockPin" type="password" inputmode="numeric" autocomplete="off" maxlength="6" aria-label="Code"><button class="rose" id="lockGo">Ouvrir</button></form>
+  <div class="err" id="lockErr" role="alert"></div>
+  <button class="forgot" id="lockForgot">Code oublié ?</button>
+</div>
+<div id="printArea"></div>
 <div class="toast" id="toast" role="status"></div>
 
 <script>
@@ -430,6 +579,101 @@ const P={
   R:{n:'Repos',h:'',d:0,c:'#dde2ea'},
   A:{n:'Absence',h:'',d:0,c:'#ff9db4'}
 };
+const MEDS=[
+// d: DCI · m: noms commerciaux · c: classe · i: indications · e: effets indésirables · s: surveillance infirmière · ci: contre-indications · n: à savoir
+{d:"Paracétamol",m:"Doliprane, Dafalgan, Efferalgan, Perfalgan (IV)",c:"Antalgique de palier 1, antipyrétique",i:"Douleurs légères à modérées ; fièvre.",e:"Rares aux doses usuelles : réactions cutanées allergiques. Toxicité pour le foie en cas de surdosage.",s:"Dose totale sur 24 h (en général 4 g/j maximum chez l'adulte, souvent 3 g/j si poids < 50 kg, sujet fragile ou atteinte du foie : suivre la prescription) ; au moins 4 h entre deux prises ; efficacité sur la douleur (EVA) et la température.",ci:"Insuffisance hépatique sévère ; allergie au paracétamol.",n:"Beaucoup de médicaments en contiennent (Ixprim, Codoliprane…) : tout additionner pour éviter le surdosage."},
+{d:"Ibuprofène",m:"Advil, Nurofen, Spedifen, Antarène",c:"Anti-inflammatoire non stéroïdien (AINS)",i:"Douleurs, fièvre, inflammation, règles douloureuses.",e:"Douleurs et brûlures d'estomac, ulcère et hémorragie digestive, atteinte des reins, rétention d'eau, hausse de la tension, allergie, crise d'asthme.",s:"Prise pendant le repas ; douleurs abdominales, selles noires ; fonction rénale et tension ; signes allergiques.",ci:"Ulcère évolutif ou hémorragie digestive ; insuffisance rénale, hépatique ou cardiaque sévère ; allergie aux AINS ou à l'aspirine ; grossesse à partir du 6e mois.",n:"Prudence chez la personne âgée, déshydratée ou traitée par anticoagulant, IEC ou diurétique."},
+{d:"Kétoprofène",m:"Profénid, Bi-Profénid, Kétum gel",c:"Anti-inflammatoire non stéroïdien (AINS)",i:"Douleurs aiguës (post-opératoires, rhumatologiques, coliques néphrétiques), inflammation.",e:"Comme les autres AINS : troubles digestifs, ulcère, atteinte rénale, allergie. Gel : réactions de photosensibilité.",s:"Prise pendant le repas ; douleurs abdominales, selles noires ; fonction rénale ; en IV, respecter la dilution et la durée de perfusion.",ci:"Celles des AINS (ulcère évolutif, insuffisance rénale/hépatique/cardiaque sévère, allergie, grossesse à partir du 6e mois). Gel : pas d'exposition au soleil pendant et 2 semaines après.",n:""},
+{d:"Néfopam",m:"Acupan",c:"Antalgique non morphinique d'action centrale",i:"Douleurs aiguës, notamment post-opératoires.",e:"Sueurs, nausées, accélération du cœur, somnolence, vertiges, bouche sèche, rétention urinaire.",s:"Perfusion lente (au moins 15 min), patient allongé ; pouls, sueurs, mictions.",ci:"Convulsions ou antécédent de convulsions ; glaucome à angle fermé ; risque de rétention urinaire (troubles de la prostate) ; enfant de moins de 15 ans.",n:"La prise par la bouche (sur un sucre) se fait mais n'est pas prévue par l'autorisation du médicament."},
+{d:"Tramadol",m:"Contramal, Topalgic, Ixprim et Zaldiar (avec paracétamol)",c:"Antalgique opioïde faible (palier 2)",i:"Douleurs modérées à intenses.",e:"Nausées, vomissements, vertiges, somnolence, constipation, convulsions, hypoglycémie, syndrome sérotoninergique, dépendance.",s:"Douleur, vigilance, transit, risque de chute ; fréquence respiratoire en cas de surdosage.",ci:"Insuffisance respiratoire sévère ; épilepsie non contrôlée ; association aux IMAO.",n:"Avec Ixprim ou Zaldiar : compter le paracétamol dans le total de la journée."},
+{d:"Codéine + paracétamol",m:"Codoliprane, Dafalgan codéiné, Klipal codéine",c:"Antalgique opioïde faible (palier 2)",i:"Douleurs modérées à intenses non soulagées par le paracétamol seul.",e:"Constipation, nausées, somnolence, dépression respiratoire (surtout chez les métaboliseurs rapides), dépendance.",s:"Transit, vigilance, fréquence respiratoire ; total de paracétamol sur 24 h.",ci:"Enfant de moins de 12 ans ; allaitement ; insuffisance respiratoire ; métaboliseur ultra-rapide connu ; après ablation des amygdales chez le moins de 18 ans.",n:""},
+{d:"Morphine",m:"Skenan LP, Actiskenan, Moscontin, Oramorph, morphine injectable",c:"Opioïde fort (palier 3) · stupéfiant",i:"Douleurs intenses ou rebelles aux autres antalgiques.",e:"Constipation (presque toujours), nausées, vomissements, somnolence, dépression respiratoire, rétention urinaire, démangeaisons, confusion, pupilles en tête d'épingle.",s:"Douleur (EVA), fréquence respiratoire et score de sédation avant et après ; transit (laxatif associé) ; diurèse. Surdosage = somnolence, respiration lente, pupilles très serrées : alerter, l'antidote est la naloxone.",ci:"Insuffisance respiratoire décompensée ; insuffisance hépatique sévère ; épilepsie non contrôlée ; association à la buprénorphine ou à la nalbuphine.",n:"Stupéfiant : traçabilité et règles de stockage. Les formes LP ne s'écrasent pas et ne s'ouvrent pas."},
+{d:"Oxycodone",m:"Oxycontin LP, Oxynorm, Oxynormoro",c:"Opioïde fort (palier 3) · stupéfiant",i:"Douleurs intenses, notamment cancéreuses et post-opératoires.",e:"Comme la morphine : constipation, nausées, somnolence, dépression respiratoire, confusion.",s:"Douleur, fréquence respiratoire, sédation, transit ; signes de surdosage (antidote : naloxone).",ci:"Insuffisance respiratoire sévère ; insuffisance hépatique sévère ; iléus paralytique.",n:"Stupéfiant. Les formes LP ne s'écrasent pas."},
+{d:"Fentanyl transdermique",m:"Durogesic, Matrifen, fentanyl patch",c:"Opioïde fort (palier 3) · stupéfiant",i:"Douleurs chroniques intenses et stables.",e:"Comme les autres opioïdes forts ; rougeur au site du patch.",s:"Changement toutes les 72 h : noter la date et l'heure sur le patch, retirer l'ancien, changer de site. Pas de chaleur sur le patch (fièvre, bouillotte, bain chaud : le médicament passe plus vite). Sédation et fréquence respiratoire.",ci:"Douleur aiguë ou post-opératoire ; patient jamais traité par opioïde ; insuffisance respiratoire sévère.",n:"Effet en 12 à 24 h après la pose, et persiste plusieurs heures après le retrait."},
+{d:"Naloxone",m:"Narcan, Nyxoid (spray nasal), Prenoxad",c:"Antidote des opioïdes",i:"Surdosage en opioïdes avec dépression respiratoire.",e:"Retour brutal de la douleur, syndrome de sevrage (agitation, sueurs, accélération du cœur, hausse de la tension), nausées.",s:"Fréquence respiratoire, conscience, SpO₂. Son effet dure moins longtemps que celui de la morphine : surveiller longtemps (risque de rendormissement).",ci:"Allergie connue.",n:"Administration par petites doses répétées (titration) selon la prescription ou le protocole."},
+{d:"Énoxaparine",m:"Lovenox, Inhixa",c:"Héparine de bas poids moléculaire (HBPM) · anticoagulant",i:"Prévention et traitement des thromboses veineuses et embolies pulmonaires ; syndrome coronarien aigu.",e:"Saignements, hématome au point d'injection, baisse des plaquettes induite par l'héparine (TIH).",s:"Plaquettes selon la prescription ; signes de saignement (gencives, urines, selles, hématomes) ; fonction rénale. Injection sous-cutanée dans le ventre en alternant les côtés, sans purger la bulle d'air et sans masser.",ci:"Antécédent de TIH ; saignement en cours ; hémorragie cérébrale ; insuffisance rénale sévère à dose curative.",n:"Antidote partiel : sulfate de protamine."},
+{d:"Tinzaparine",m:"Innohep",c:"Héparine de bas poids moléculaire (HBPM) · anticoagulant",i:"Prévention et traitement des thromboses veineuses et embolies pulmonaires.",e:"Saignements, hématome au point d'injection, TIH.",s:"Comme l'énoxaparine : plaquettes, signes de saignement, fonction rénale, technique d'injection sous-cutanée.",ci:"Antécédent de TIH ; saignement en cours ; hémorragie cérébrale.",n:"Une injection par jour en traitement curatif."},
+{d:"Héparine non fractionnée",m:"Héparine sodique (seringue électrique), Calciparine (sous-cutanée)",c:"Anticoagulant (HNF)",i:"Traitement des thromboses, surtout en cas d'insuffisance rénale sévère ou quand un arrêt rapide peut être nécessaire.",e:"Saignements, TIH.",s:"TCA ou activité anti-Xa selon le protocole (adaptation du débit) ; plaquettes ; signes de saignement.",ci:"Antécédent de TIH ; saignement en cours.",n:"Antidote : sulfate de protamine. Médicament à haut risque : double vérification des débits."},
+{d:"Warfarine",m:"Coumadine (autres AVK : Previscan, Sintrom)",c:"Antivitamine K (AVK) · anticoagulant oral",i:"Fibrillation atriale, valve cardiaque mécanique, thromboses et embolies pulmonaires.",e:"Saignements.",s:"INR (cible le plus souvent entre 2 et 3, plus haute pour certaines valves) ; prise le soir à heure fixe ; carnet AVK ; signes de saignement ; nombreuses interactions (antibiotiques, AINS, aspirine).",ci:"Saignement en cours ; insuffisance hépatique sévère ; grossesse.",n:"Antidote : vitamine K (et concentré de facteurs en urgence)."},
+{d:"Apixaban",m:"Eliquis",c:"Anticoagulant oral direct (AOD, anti-Xa)",i:"Prévention des AVC en cas de fibrillation atriale ; thromboses et embolies pulmonaires ; après prothèse de hanche ou de genou.",e:"Saignements, anémie, nausées.",s:"Signes de saignement ; fonction rénale ; deux prises par jour à heures régulières. Pas d'INR à surveiller.",ci:"Saignement en cours ; maladie du foie avec troubles de la coagulation ; valve mécanique ; association à un autre anticoagulant.",n:""},
+{d:"Rivaroxaban",m:"Xarelto",c:"Anticoagulant oral direct (AOD, anti-Xa)",i:"Fibrillation atriale ; thromboses et embolies pulmonaires ; après prothèse de hanche ou de genou.",e:"Saignements, anémie.",s:"Signes de saignement ; fonction rénale ; les doses de 15 et 20 mg se prennent pendant un repas.",ci:"Saignement en cours ; maladie du foie avec troubles de la coagulation ; valve mécanique ; association à un autre anticoagulant.",n:""},
+{d:"Dabigatran",m:"Pradaxa",c:"Anticoagulant oral direct (anti-IIa)",i:"Fibrillation atriale ; thromboses et embolies pulmonaires ; après prothèse de hanche ou de genou.",e:"Saignements, brûlures d'estomac.",s:"Signes de saignement ; fonction rénale (éliminé surtout par les reins) ; gélules à avaler entières.",ci:"Insuffisance rénale sévère ; saignement en cours ; valve mécanique.",n:"Antidote : idarucizumab (Praxbind)."},
+{d:"Aspirine (dose antiagrégante)",m:"Kardégic, Aspirine Protect, Resitune",c:"Antiagrégant plaquettaire",i:"Prévention après infarctus, AVC, pose de stent ou artérite.",e:"Saignements, ulcère et hémorragie digestive, allergie, crise d'asthme.",s:"Signes de saignement, douleurs d'estomac, selles noires. Ne pas arrêter sans avis médical (risque de thrombose du stent).",ci:"Ulcère évolutif ; allergie à l'aspirine ou aux AINS ; risque hémorragique ; grossesse à partir du 6e mois au-delà de 100 mg/j.",n:""},
+{d:"Clopidogrel",m:"Plavix",c:"Antiagrégant plaquettaire",i:"Prévention après syndrome coronarien, stent, AVC, artérite ; souvent associé à l'aspirine.",e:"Saignements, troubles digestifs, éruption cutanée.",s:"Signes de saignement ; ne pas arrêter sans avis médical.",ci:"Saignement en cours ; insuffisance hépatique sévère.",n:""},
+{d:"Ticagrélor",m:"Brilique",c:"Antiagrégant plaquettaire",i:"Syndrome coronarien aigu, en association à l'aspirine.",e:"Saignements, essoufflement, ralentissement du cœur.",s:"Signes de saignement ; essoufflement ; pouls.",ci:"Saignement en cours ; antécédent d'hémorragie cérébrale ; insuffisance hépatique sévère.",n:""},
+{d:"Furosémide",m:"Lasilix",c:"Diurétique de l'anse",i:"Œdème aigu du poumon, œdèmes, insuffisance cardiaque, certaines hypertensions.",e:"Baisse du potassium et du sodium, déshydratation, chute de tension, atteinte rénale, troubles de l'audition (fortes doses en IV rapide), goutte.",s:"Poids chaque jour, diurèse, tension (y compris debout), ionogramme (potassium), créatinine, signes de déshydratation. Donner de préférence le matin.",ci:"Déshydratation ; encéphalopathie hépatique ; obstacle sur les voies urinaires ; allergie aux sulfamides.",n:"En IV : injection lente."},
+{d:"Spironolactone",m:"Aldactone",c:"Diurétique épargneur de potassium",i:"Insuffisance cardiaque, ascite de la cirrhose, hyperaldostéronisme, hypertension.",e:"Hausse du potassium, gonflement des seins chez l'homme, atteinte rénale.",s:"Potassium, créatinine, tension.",ci:"Potassium élevé ; insuffisance rénale sévère ; association à des apports de potassium sans avis médical.",n:"Prudence avec les IEC et les ARA II (risque de potassium élevé)."},
+{d:"Hydrochlorothiazide",m:"Esidrex ; associé dans de nombreux médicaments (Co-…, Fortzaar…)",c:"Diurétique thiazidique",i:"Hypertension, œdèmes.",e:"Baisse du potassium et du sodium, hausse du sucre et de l'acide urique, photosensibilité.",s:"Ionogramme, glycémie, tension.",ci:"Insuffisance rénale sévère ; allergie aux sulfamides ; potassium bas.",n:""},
+{d:"Bisoprolol",m:"Cardensiel, Detensiel (autres bêtabloquants : aténolol, nébivolol, propranolol)",c:"Bêtabloquant",i:"Hypertension, insuffisance cardiaque, angine de poitrine, troubles du rythme.",e:"Pouls lent, chute de tension, fatigue, extrémités froides, gêne respiratoire ; masque les signes d'hypoglycémie.",s:"Pouls et tension avant la prise (prévenir si pouls très lent, selon la prescription) ; essoufflement. Ne jamais arrêter brutalement.",ci:"Asthme ou BPCO sévère ; bloc cardiaque non appareillé ; pouls très lent ; insuffisance cardiaque décompensée ; choc.",n:""},
+{d:"Amiodarone",m:"Cordarone",c:"Antiarythmique",i:"Fibrillation atriale et autres troubles du rythme.",e:"Pouls lent, troubles de la thyroïde, photosensibilité, dépôts dans la cornée, atteinte pulmonaire et hépatique. En IV : irritation des veines (phlébite), chute de tension.",s:"Pouls, ECG, TSH, bilan hépatique. En IV : voie centrale de préférence, dilution uniquement dans du glucosé 5 %, surveiller le point de ponction. Protection solaire.",ci:"Pouls lent ou bloc non appareillé ; maladie de la thyroïde ; grossesse ; allergie à l'iode.",n:"Nombreuses interactions (AVK, digoxine…)."},
+{d:"Digoxine",m:"Digoxine Nativelle",c:"Digitalique",i:"Ralentir le cœur en cas de fibrillation atriale ; insuffisance cardiaque.",e:"Surdosage fréquent (marge étroite) : nausées, vomissements, perte d'appétit, vision jaune, pouls lent, troubles du rythme, confusion.",s:"Pouls avant la prise ; digoxinémie ; potassium (un potassium bas favorise le surdosage) ; fonction rénale ; signes de surdosage surtout chez la personne âgée.",ci:"Bloc cardiaque non appareillé ; troubles du rythme ventriculaires.",n:"Antidote : anticorps antidigoxine."},
+{d:"Ramipril",m:"Triatec (autres IEC : périndopril Coversyl, énalapril Renitec)",c:"Inhibiteur de l'enzyme de conversion (IEC)",i:"Hypertension, insuffisance cardiaque, après infarctus, protection des reins.",e:"Toux sèche, chute de tension (surtout à la 1re prise), potassium élevé, atteinte rénale, gonflement du visage (angiœdème).",s:"Tension (1re prise), potassium, créatinine. Gonflement des lèvres ou du visage : urgence.",ci:"Antécédent d'angiœdème ; grossesse (2e et 3e trimestres) ; rétrécissement des deux artères rénales.",n:""},
+{d:"Valsartan",m:"Tareg (autres ARA II : losartan Cozaar, irbésartan Aprovel, candésartan Atacand)",c:"Antagoniste de l'angiotensine II (ARA II)",i:"Hypertension, insuffisance cardiaque, protection des reins chez le diabétique.",e:"Chute de tension, vertiges, potassium élevé, atteinte rénale.",s:"Tension, potassium, créatinine.",ci:"Grossesse (2e et 3e trimestres) ; insuffisance hépatique sévère.",n:""},
+{d:"Amlodipine",m:"Amlor",c:"Inhibiteur calcique",i:"Hypertension, angine de poitrine.",e:"Gonflement des chevilles, maux de tête, bouffées de chaleur, chute de tension.",s:"Tension ; œdèmes des jambes.",ci:"Choc ; chute de tension sévère ; rétrécissement aortique serré.",n:""},
+{d:"Nicardipine",m:"Loxen",c:"Inhibiteur calcique (forme injectable)",i:"Poussée hypertensive ; hypertension autour d'une opération ou de la grossesse.",e:"Chute de tension, accélération du cœur, maux de tête, rougeur, irritation de la veine.",s:"Tension très rapprochée (scope) ; point de perfusion ; administration à la seringue électrique.",ci:"Rétrécissement aortique serré ; choc.",n:""},
+{d:"Trinitrine",m:"Natispray, Trinitrine injectable, Risordan, Nitriderm TTS",c:"Dérivé nitré (vasodilatateur)",i:"Crise d'angine de poitrine, œdème aigu du poumon, syndrome coronarien.",e:"Maux de tête, chute de tension, malaise, accélération du cœur.",s:"Tension avant et après, patient assis ; douleur thoracique (durée, évolution) ; ECG. Patch : souvent retiré la nuit selon la prescription.",ci:"Chute de tension, choc ; prise de sildénafil ou tadalafil (Viagra, Cialis) ; cardiomyopathie obstructive.",n:""},
+{d:"Atorvastatine",m:"Tahor (autres statines : rosuvastatine Crestor, simvastatine Zocor)",c:"Statine (hypocholestérolémiant)",i:"Excès de cholestérol ; prévention cardiovasculaire.",e:"Douleurs musculaires, rarement destruction musculaire grave, hausse des enzymes du foie, troubles digestifs.",s:"Douleurs musculaires (à signaler), bilan hépatique ; CPK si douleurs.",ci:"Maladie du foie évolutive ; grossesse ; allaitement.",n:""},
+{d:"Insuline rapide",m:"Novorapid (asparte), Humalog (lispro), Apidra (glulisine), Fiasp, Actrapid (humaine)",c:"Insuline d'action rapide",i:"Diabète : insuline des repas et corrections ; Actrapid à la seringue électrique en situation aiguë.",e:"Hypoglycémie, boules de graisse aux points d'injection, baisse du potassium (en IV).",s:"Glycémie capillaire avant l'injection ; le repas doit être pris (injection juste avant pour les analogues) ; changer de point d'injection ; signes d'hypoglycémie (sueurs, tremblements, faim, confusion) : resucrer.",ci:"Hypoglycémie.",n:"Médicament à haut risque : vérifier les unités à deux. Un stylo n'est jamais partagé entre patients."},
+{d:"Insuline lente",m:"Lantus, Abasaglar, Toujeo (glargine), Tresiba (dégludec), Levemir (détémir)",c:"Insuline basale",i:"Diabète : insuline de fond.",e:"Hypoglycémie, boules de graisse aux points d'injection.",s:"Injection à heure fixe ; glycémie à jeun ; changer de point d'injection ; ne pas mélanger avec une autre insuline.",ci:"Hypoglycémie.",n:"Toujeo est concentré (300 U/ml) : ne jamais le prélever à la seringue."},
+{d:"Metformine",m:"Glucophage, Stagid",c:"Antidiabétique oral (biguanide)",i:"Diabète de type 2.",e:"Diarrhée, nausées, goût métallique ; acidose lactique (rare mais grave) ; carence en vitamine B12 au long cours.",s:"Prise pendant ou à la fin du repas ; fonction rénale. Souvent arrêtée avant un examen avec produit de contraste iodé ou une chirurgie (selon le protocole).",ci:"Insuffisance rénale sévère ; acidocétose ; déshydratation ; insuffisance cardiaque ou respiratoire décompensée ; insuffisance hépatique ; intoxication alcoolique.",n:""},
+{d:"Gliclazide",m:"Diamicron",c:"Antidiabétique oral (sulfamide hypoglycémiant)",i:"Diabète de type 2.",e:"Hypoglycémie (parfois prolongée chez la personne âgée), troubles digestifs, prise de poids.",s:"Glycémies ; repas réguliers ; signes d'hypoglycémie.",ci:"Diabète de type 1 ; insuffisance rénale ou hépatique sévère ; allergie aux sulfamides ; association au miconazole.",n:""},
+{d:"Sitagliptine",m:"Januvia, Xelevia ; Janumet, Velmetia (avec metformine)",c:"Antidiabétique oral (gliptine)",i:"Diabète de type 2.",e:"Maux de tête, rhinopharyngite, rarement pancréatite.",s:"Douleur abdominale intense (à signaler) ; fonction rénale.",ci:"Allergie connue.",n:""},
+{d:"Sémaglutide",m:"Ozempic (autres : dulaglutide Trulicity, liraglutide Victoza)",c:"Analogue du GLP-1 (injectable)",i:"Diabète de type 2.",e:"Nausées, vomissements, diarrhée, pancréatite, calculs biliaires.",s:"Troubles digestifs, poids ; injection une fois par semaine le même jour (Ozempic, Trulicity).",ci:"Allergie connue ; prudence en cas d'antécédent de pancréatite.",n:""},
+{d:"Glucose 30 %",m:"G30, glucosé hypertonique",c:"Soluté sucré concentré",i:"Hypoglycémie sévère (voie veineuse).",e:"Irritation de la veine, nécrose en cas de passage hors de la veine, hyperglycémie.",s:"Voie veineuse bien en place ; glycémie de contrôle 15 min après, puis resucrage par la bouche dès que possible.",ci:"Aucune en cas d'hypoglycémie sévère.",n:""},
+{d:"Glucagon",m:"GlucaGen, Baqsimi (poudre nasale)",c:"Hormone hyperglycémiante",i:"Hypoglycémie sévère sans voie veineuse (patient inconscient).",e:"Nausées, vomissements.",s:"Glycémie, conscience ; resucrage par la bouche dès le réveil. Mettre en position latérale de sécurité.",ci:"Phéochromocytome.",n:"Peu efficace si les réserves de sucre du foie sont vides (jeûne prolongé, alcool, sulfamides)."},
+{d:"Amoxicilline",m:"Clamoxyl",c:"Antibiotique (pénicilline)",i:"Infections ORL, respiratoires, urinaires, dentaires ; Helicobacter pylori ; endocardite.",e:"Allergie (éruption jusqu'au choc anaphylactique), diarrhée, mycose.",s:"Demander les allergies avant la 1re dose ; signes allergiques ; transit ; température.",ci:"Allergie aux pénicillines (prudence avec les céphalosporines).",n:""},
+{d:"Amoxicilline + acide clavulanique",m:"Augmentin",c:"Antibiotique (pénicilline + inhibiteur de bêtalactamase)",i:"Infections respiratoires, ORL, urinaires, cutanées, morsures.",e:"Diarrhée fréquente, allergie, mycose, rarement hépatite.",s:"Prise en début de repas ; allergies ; transit.",ci:"Allergie aux pénicillines ; antécédent d'atteinte du foie avec ce médicament.",n:""},
+{d:"Ceftriaxone",m:"Rocéphine",c:"Antibiotique (céphalosporine de 3e génération)",i:"Méningite, pneumonie, pyélonéphrite, infections sévères.",e:"Allergie, diarrhée (dont Clostridioides difficile), calculs biliaires, douleur au point d'injection.",s:"Allergies ; température ; ne jamais mélanger avec du calcium en IV (précipité). En IM, la dilution avec la lidocaïne ne doit jamais être injectée en IV.",ci:"Allergie aux céphalosporines ; réaction grave à une pénicilline ; nouveau-né recevant du calcium IV.",n:""},
+{d:"Pipéracilline + tazobactam",m:"Tazocilline",c:"Antibiotique (pénicilline large spectre)",i:"Infections sévères, souvent nosocomiales.",e:"Allergie, diarrhée, baisse du potassium, troubles sanguins.",s:"Allergies ; ionogramme ; NFS ; température.",ci:"Allergie aux bêtalactamines.",n:""},
+{d:"Vancomycine",m:"Vancomycine",c:"Antibiotique (glycopeptide)",i:"Infections à staphylocoque résistant (SARM) ; Clostridioides difficile (par la bouche).",e:"Atteinte des reins et de l'audition ; « syndrome de l'homme rouge » si perfusion trop rapide (rougeur, démangeaisons, chute de tension) ; irritation de la veine.",s:"Dosages sanguins selon la prescription ; créatinine ; perfusion lente (au moins 60 min) ; audition.",ci:"Allergie connue.",n:""},
+{d:"Gentamicine",m:"Gentalline (autre aminoside : amikacine)",c:"Antibiotique (aminoside)",i:"Infections graves, en association et pour une courte durée.",e:"Atteinte des reins ; atteinte de l'oreille (vertiges, acouphènes, surdité parfois définitive).",s:"Dosages (pic et taux résiduel), créatinine, diurèse, audition ; durée courte.",ci:"Myasthénie ; allergie aux aminosides.",n:""},
+{d:"Ciprofloxacine",m:"Ciflox (autres fluoroquinolones : lévofloxacine Tavanic, ofloxacine Oflocet)",c:"Antibiotique (fluoroquinolone)",i:"Infections urinaires compliquées, prostatites, infections digestives et osseuses.",e:"Douleur et rupture de tendon (Achille), photosensibilité, troubles neuropsychiques, troubles du rythme (QT), hypo ou hyperglycémie.",s:"Douleur d'un tendon : arrêter et prévenir ; protection solaire ; espacer de 2 h du calcium, du fer et des antiacides ; glycémie chez le diabétique.",ci:"Antécédent de tendinopathie avec une fluoroquinolone ; grossesse ; allaitement ; enfant en croissance (sauf exception).",n:""},
+{d:"Métronidazole",m:"Flagyl",c:"Antibiotique et antiparasitaire (nitro-imidazolé)",i:"Infections à germes anaérobies, Clostridioides difficile, amibes, trichomonas.",e:"Goût métallique, nausées, urines foncées, atteinte des nerfs (traitements longs), effet antabuse avec l'alcool.",s:"Pas d'alcool pendant le traitement et 48 h après ; troubles neurologiques.",ci:"Allergie aux imidazolés.",n:""},
+{d:"Sulfaméthoxazole + triméthoprime",m:"Bactrim",c:"Antibiotique (sulfamide)",i:"Infections urinaires ; prévention et traitement de la pneumocystose.",e:"Allergies cutanées parfois très graves (Lyell, Stevens-Johnson), troubles sanguins, potassium élevé, atteinte rénale.",s:"Toute éruption : arrêter et prévenir ; NFS, potassium, créatinine ; bonne hydratation.",ci:"Allergie aux sulfamides ; déficit en G6PD ; insuffisance hépatique sévère.",n:""},
+{d:"Fosfomycine-trométamol",m:"Monuril, Uridoz",c:"Antibiotique urinaire",i:"Cystite simple de la femme (dose unique).",e:"Diarrhée, nausées.",s:"Prise à distance des repas, de préférence le soir au coucher, vessie vide.",ci:"Insuffisance rénale sévère.",n:""},
+{d:"Azithromycine",m:"Zithromax, Ordipha (autre macrolide : clarithromycine Zeclar)",c:"Antibiotique (macrolide)",i:"Infections respiratoires et ORL, certaines IST.",e:"Troubles digestifs, troubles du rythme (QT), atteinte du foie.",s:"Interactions médicamenteuses (surtout avec la clarithromycine) ; ECG si risque de QT long.",ci:"Allergie aux macrolides.",n:""},
+{d:"Aciclovir",m:"Zovirax (forme orale proche : valaciclovir Zelitrex)",c:"Antiviral",i:"Herpès, zona, varicelle grave.",e:"Troubles digestifs, maux de tête ; en IV à forte dose : atteinte rénale, troubles neurologiques (personne âgée, insuffisant rénal).",s:"Hydratation ; fonction rénale ; état de conscience.",ci:"Allergie connue.",n:""},
+{d:"Oméprazole",m:"Mopral (autres IPP : ésoméprazole Inexium, pantoprazole Eupantol/Inipomp, lansoprazole Lanzor)",c:"Inhibiteur de la pompe à protons (IPP)",i:"Reflux, ulcère, protection de l'estomac sous AINS, Helicobacter pylori.",e:"Maux de tête, diarrhée ; au long cours : baisse du sodium et du magnésium, infections digestives.",s:"Prise à jeun, avant le petit-déjeuner ; réévaluer la durée du traitement.",ci:"Allergie connue.",n:""},
+{d:"Métoclopramide",m:"Primpéran",c:"Antiémétique (antidopaminergique)",i:"Nausées et vomissements.",e:"Somnolence ; mouvements anormaux (contractures, surtout chez le jeune).",s:"Durée courte (5 jours maximum) ; mouvements anormaux.",ci:"Maladie de Parkinson ; antécédent de mouvements anormaux sous ce traitement ; occlusion ou hémorragie digestive ; phéochromocytome ; enfant de moins d'1 an ; association à la lévodopa.",n:""},
+{d:"Ondansétron",m:"Zophren",c:"Antiémétique (anti-5HT3)",i:"Nausées et vomissements de la chimiothérapie, de la radiothérapie ou après une opération.",e:"Constipation, maux de tête, troubles du rythme (QT).",s:"Transit ; ECG si risque de QT long.",ci:"QT long congénital ; association à l'apomorphine.",n:""},
+{d:"Lopéramide",m:"Imodium",c:"Antidiarrhéique",i:"Diarrhée aiguë.",e:"Constipation, ballonnements.",s:"Hydratation ; arrêter et prévenir en cas de fièvre ou de sang dans les selles.",ci:"Diarrhée avec fièvre ou sang ; poussée de rectocolite ; enfant de moins de 2 ans.",n:""},
+{d:"Macrogol",m:"Movicol, Forlax, Transipeg",c:"Laxatif osmotique",i:"Constipation ; fécalome (fortes doses).",e:"Diarrhée, ballonnements.",s:"Selles (fréquence, aspect) ; hydratation.",ci:"Occlusion ou perforation digestive ; maladie inflammatoire de l'intestin sévère ; douleur abdominale sans cause connue.",n:""},
+{d:"Lactulose",m:"Duphalac",c:"Laxatif osmotique",i:"Constipation ; encéphalopathie hépatique.",e:"Gaz, ballonnements, diarrhée, baisse du potassium si diarrhée.",s:"Selles (en cas d'encéphalopathie : objectif de 2 à 3 selles molles par jour) ; hydratation.",ci:"Occlusion ; galactosémie.",n:""},
+{d:"Phloroglucinol",m:"Spasfon",c:"Antispasmodique",i:"Douleurs spasmodiques digestives, urinaires et gynécologiques.",e:"Rares (allergie).",s:"Évolution de la douleur.",ci:"Allergie connue.",n:""},
+{d:"Oxazépam",m:"Seresta",c:"Benzodiazépine (anxiolytique)",i:"Anxiété ; sevrage alcoolique.",e:"Somnolence, chutes, confusion (personne âgée), trous de mémoire, dépendance ; dépression respiratoire si association (opioïdes, alcool).",s:"Vigilance, risque de chute, fréquence respiratoire ; durée limitée.",ci:"Insuffisance respiratoire sévère ; apnée du sommeil sévère ; myasthénie ; insuffisance hépatique sévère.",n:""},
+{d:"Alprazolam",m:"Xanax",c:"Benzodiazépine (anxiolytique)",i:"Anxiété.",e:"Somnolence, chutes, confusion, trous de mémoire, dépendance, dépression respiratoire si association.",s:"Vigilance, chutes, fréquence respiratoire ; ne pas arrêter brutalement après un traitement long.",ci:"Insuffisance respiratoire sévère ; apnée du sommeil sévère ; myasthénie ; insuffisance hépatique sévère.",n:""},
+{d:"Lorazépam",m:"Témesta",c:"Benzodiazépine (anxiolytique)",i:"Anxiété ; sevrage alcoolique ; agitation.",e:"Somnolence, chutes, confusion, dépendance, dépression respiratoire si association.",s:"Vigilance, chutes, fréquence respiratoire.",ci:"Insuffisance respiratoire sévère ; apnée du sommeil sévère ; myasthénie ; insuffisance hépatique sévère.",n:""},
+{d:"Diazépam",m:"Valium",c:"Benzodiazépine (action longue)",i:"Anxiété, sevrage alcoolique, crises convulsives (IV ou voie rectale), contractures musculaires.",e:"Somnolence prolongée, chutes, confusion, dépendance, dépression respiratoire.",s:"Vigilance, fréquence respiratoire, SpO₂ (surtout en IV) ; chutes.",ci:"Insuffisance respiratoire sévère ; apnée du sommeil sévère ; myasthénie ; insuffisance hépatique sévère.",n:""},
+{d:"Zolpidem",m:"Stilnox",c:"Hypnotique (apparenté aux benzodiazépines)",i:"Insomnie, sur une courte durée.",e:"Somnolence le lendemain, comportements automatiques nocturnes, chutes, dépendance.",s:"Prise au coucher, déjà au lit ; risque de chute la nuit ; durée de 4 semaines maximum.",ci:"Insuffisance respiratoire sévère ; apnée du sommeil ; myasthénie ; insuffisance hépatique sévère ; antécédent de comportements complexes pendant le sommeil.",n:"Ordonnance sécurisée obligatoire."},
+{d:"Halopéridol",m:"Haldol",c:"Neuroleptique (antipsychotique)",i:"Agitation, délire, états psychotiques ; nausées (petites doses).",e:"Raideurs et tremblements, somnolence, chute de tension en se levant, troubles du rythme (QT), syndrome malin des neuroleptiques (fièvre, rigidité, sueurs : urgence).",s:"Température et rigidité ; mouvements anormaux ; tension ; ECG ; vigilance.",ci:"QT long ; maladie de Parkinson ; coma.",n:""},
+{d:"Cyamémazine",m:"Tercian",c:"Neuroleptique sédatif",i:"Anxiété sévère, agitation.",e:"Somnolence, chute de tension en se levant, bouche sèche, constipation, rétention urinaire.",s:"Tension (se lever progressivement), vigilance, transit, mictions.",ci:"Glaucome à angle fermé ; risque de rétention urinaire.",n:""},
+{d:"Loxapine",m:"Loxapac",c:"Neuroleptique (antipsychotique)",i:"Agitation, états psychotiques.",e:"Somnolence, raideurs et tremblements, chute de tension, syndrome malin des neuroleptiques.",s:"Tension, vigilance, température, mouvements anormaux.",ci:"Coma ; risque de glaucome à angle fermé ou de rétention urinaire.",n:""},
+{d:"Rispéridone",m:"Risperdal (autre antipsychotique atypique : olanzapine Zyprexa)",c:"Antipsychotique atypique",i:"Schizophrénie, troubles bipolaires, agitation de certaines démences.",e:"Prise de poids, hausse du sucre et des graisses dans le sang, somnolence, raideurs, chute de tension.",s:"Poids, glycémie, tension, mouvements anormaux.",ci:"Allergie connue (prudence chez la personne âgée démente : risque d'AVC).",n:""},
+{d:"Sertraline",m:"Zoloft (autres ISRS : escitalopram Seroplex, paroxétine Deroxat, fluoxétine Prozac)",c:"Antidépresseur (ISRS)",i:"Dépression, troubles anxieux, TOC.",e:"Nausées, troubles sexuels, baisse du sodium (personne âgée), syndrome sérotoninergique, idées suicidaires en début de traitement.",s:"Humeur et idées suicidaires surtout les premières semaines ; sodium chez la personne âgée ; ne pas arrêter brutalement.",ci:"Association aux IMAO ; QT long pour l'escitalopram et le citalopram.",n:""},
+{d:"Lithium",m:"Téralithe",c:"Thymorégulateur",i:"Trouble bipolaire.",e:"Tremblements fins, soif et urines abondantes, prise de poids, hypothyroïdie. Surdosage (marge étroite) : diarrhée, vomissements, gros tremblements, confusion, troubles de l'équilibre.",s:"Lithiémie ; fonction rénale ; TSH ; hydratation. Un régime sans sel, une déshydratation, les AINS, les diurétiques et les IEC favorisent le surdosage.",ci:"Insuffisance rénale ; régime sans sel ; déshydratation.",n:""},
+{d:"Valproate",m:"Dépakine, Dépakote, Dépamide",c:"Antiépileptique et thymorégulateur",i:"Épilepsie ; trouble bipolaire.",e:"Prise de poids, tremblements, atteinte du foie, pancréatite, baisse des plaquettes, malformations graves chez l'enfant à naître.",s:"Bilan hépatique ; NFS et plaquettes ; contraception efficace obligatoire chez la femme pouvant être enceinte.",ci:"Grossesse (sauf exception) ; femme en âge d'avoir des enfants sans contraception efficace ; hépatite ; porphyrie.",n:""},
+{d:"Lévétiracétam",m:"Keppra",c:"Antiépileptique",i:"Épilepsie.",e:"Somnolence, fatigue, irritabilité, troubles de l'humeur, idées suicidaires.",s:"Crises ; humeur ; ne pas arrêter brutalement ; fonction rénale.",ci:"Allergie connue.",n:""},
+{d:"Lévodopa",m:"Modopar, Sinemet",c:"Antiparkinsonien",i:"Maladie de Parkinson.",e:"Nausées, chute de tension en se levant, mouvements involontaires, hallucinations, confusion.",s:"Horaires de prise très stricts ; tension debout ; mouvements ; ne jamais arrêter brutalement.",ci:"Psychose grave ; association aux IMAO non sélectifs.",n:"Les repas riches en protéines diminuent son absorption."},
+{d:"Salbutamol",m:"Ventoline, Airomir",c:"Bronchodilatateur d'action rapide (bêta-2 agoniste)",i:"Crise d'asthme ; exacerbation de BPCO.",e:"Tremblements, accélération du cœur, palpitations, maux de tête, baisse du potassium (doses répétées).",s:"Fréquence respiratoire, SpO₂, pouls ; technique d'inhalation (chambre d'inhalation) ; potassium si aérosols répétés.",ci:"Allergie connue (prudence en cas de maladie cardiaque).",n:""},
+{d:"Ipratropium",m:"Atrovent",c:"Bronchodilatateur anticholinergique",i:"Asthme aigu grave (avec le salbutamol) ; BPCO.",e:"Bouche sèche, rétention urinaire, crise de glaucome si projection dans les yeux.",s:"Masque d'aérosol bien ajusté (protéger les yeux).",ci:"Allergie aux atropiniques.",n:""},
+{d:"Corticoïde inhalé",m:"Pulmicort (budésonide), Flixotide, Bécotide ; Symbicort, Seretide, Innovair (associations)",c:"Anti-inflammatoire bronchique",i:"Traitement de fond de l'asthme et de certaines BPCO.",e:"Mycose de la bouche, voix enrouée.",s:"Se rincer la bouche après chaque prise ; traitement de fond à prendre tous les jours (ne soulage pas une crise).",ci:"Allergie connue.",n:""},
+{d:"Prednisolone",m:"Solupred (prednisone : Cortancyl)",c:"Corticoïde",i:"Inflammations, allergies, maladies auto-immunes, asthme, poussées de BPCO.",e:"Hausse du sucre, rétention d'eau et hausse de la tension, baisse du potassium, insomnie ou excitation, infections, ostéoporose, troubles digestifs.",s:"Glycémie (surtout chez le diabétique), tension, poids, potassium, signes d'infection ; prise le matin ; jamais d'arrêt brutal après un traitement long (diminution progressive).",ci:"Infection non contrôlée ; vaccins vivants à forte dose ; troubles psychiatriques non contrôlés.",n:""},
+{d:"Méthylprednisolone",m:"Solumédrol (IV), Médrol (comprimés)",c:"Corticoïde",i:"Urgences inflammatoires et allergiques (asthme grave, en complément dans l'anaphylaxie), poussées de sclérose en plaques.",e:"Comme les autres corticoïdes : hausse du sucre et de la tension, excitation, infections.",s:"Glycémie, tension, signes d'infection.",ci:"Infection non contrôlée ; vaccins vivants.",n:""},
+{d:"Hydrocortisone",m:"Hydrocortisone Roussel, hémisuccinate d'hydrocortisone (injectable)",c:"Corticoïde",i:"Insuffisance surrénale (substitution et crise aiguë) ; choc septique.",e:"Hausse du sucre, rétention d'eau.",s:"Glycémie, tension, ionogramme. Ne jamais arrêter chez l'insuffisant surrénalien.",ci:"Aucune en urgence vitale.",n:""},
+{d:"Adrénaline",m:"Anapen, Epipen, Jext (stylos), adrénaline injectable",c:"Catécholamine",i:"Choc anaphylactique (IM) ; arrêt cardiaque (IV) ; certains chocs.",e:"Accélération du cœur, troubles du rythme, hausse de la tension, tremblements, anxiété.",s:"Tension, pouls, scope ; stylo en IM sur la face externe de la cuisse ; vérifier les dilutions (médicament à haut risque).",ci:"Aucune en cas d'anaphylaxie ou d'arrêt cardiaque.",n:""},
+{d:"Atropine",m:"Atropine injectable",c:"Parasympatholytique",i:"Pouls lent mal toléré ; prémédication ; intoxication aux organophosphorés.",e:"Accélération du cœur, bouche sèche, rétention urinaire, pupilles dilatées, confusion.",s:"Pouls, scope.",ci:"Glaucome à angle fermé ; rétention urinaire (hors urgence vitale).",n:""},
+{d:"Vitamine K1 (phytoménadione)",m:"Vitamine K1 Roche",c:"Vitamine (antidote des AVK)",i:"Surdosage en AVK ; prévention des hémorragies du nouveau-né.",e:"En IV : rares réactions allergiques graves (injection lente).",s:"INR de contrôle ; IV lente.",ci:"Allergie connue.",n:""},
+{d:"Chlorure de potassium",m:"Diffu-K, Kaleorid (par la bouche), KCl injectable",c:"Apport de potassium",i:"Potassium bas.",e:"Potassium trop élevé (troubles du rythme graves), irritation digestive (comprimés), irritation de la veine (IV).",s:"Kaliémie. En IV : TOUJOURS dilué et en perfusion lente, JAMAIS en injection directe (arrêt cardiaque) ; débit selon le protocole.",ci:"Potassium élevé ; prudence en cas d'insuffisance rénale.",n:"Médicament à haut risque : double vérification."},
+{d:"Fer",m:"Tardyferon, Timoferol (par la bouche) ; Ferinject, Venofer (IV)",c:"Apport de fer",i:"Anémie par manque de fer.",e:"Par la bouche : selles noires (normal), troubles digestifs, constipation. En IV : réactions allergiques, baisse du phosphore.",s:"Par la bouche : à distance du thé, du café et des pansements gastriques. En IV : surveiller 30 min après la perfusion (allergie).",ci:"Surcharge en fer ; anémie non liée à un manque de fer.",n:""},
+{d:"Lévothyroxine",m:"Lévothyrox, L-Thyroxine, TCaps",c:"Hormone thyroïdienne",i:"Hypothyroïdie.",e:"En cas de surdosage : palpitations, accélération du cœur, insomnie, amaigrissement, tremblements.",s:"Prise à jeun le matin, 30 min avant le petit-déjeuner, à distance du fer et du calcium ; TSH.",ci:"Hyperthyroïdie non traitée ; insuffisance surrénale non corrigée ; infarctus récent.",n:""},
+{d:"Allopurinol",m:"Zyloric",c:"Hypo-uricémiant",i:"Traitement de fond de la goutte ; excès d'acide urique.",e:"Éruption cutanée parfois très grave (arrêt immédiat), crise de goutte en début de traitement, troubles digestifs.",s:"Toute éruption : arrêter et prévenir ; fonction rénale ; hydratation.",ci:"Allergie connue.",n:""},
+{d:"Colchicine",m:"Colchicine Opocalcium, Colchimax",c:"Anti-goutteux",i:"Crise de goutte ; péricardite ; maladie périodique.",e:"Diarrhée (premier signe de surdosage), nausées ; surdosage grave possible.",s:"Diarrhée : prévenir ; fonction rénale ; interactions (macrolides…).",ci:"Insuffisance rénale ou hépatique sévère ; association aux macrolides (sauf spiramycine) et à la pristinamycine.",n:""},
+{d:"Méthotrexate",m:"Novatrex, Metoject, Imeth",c:"Immunosuppresseur (antimétabolite)",i:"Polyarthrite rhumatoïde, psoriasis ; cancers (fortes doses).",e:"Toxicité pour le sang, le foie et les poumons ; aphtes ; malformations chez l'enfant à naître.",s:"UNE prise PAR SEMAINE, jamais tous les jours (erreurs parfois mortelles) ; NFS, bilan hépatique, fonction rénale ; toux ou essoufflement à signaler.",ci:"Grossesse ; allaitement ; insuffisance rénale ou hépatique sévère ; infection sévère.",n:""},
+{d:"Dexchlorphéniramine",m:"Polaramine",c:"Antihistaminique",i:"Allergies, urticaire ; prémédication avant certains traitements.",e:"Somnolence, bouche sèche, rétention urinaire.",s:"Vigilance ; risque de chute.",ci:"Glaucome à angle fermé ; risque de rétention urinaire.",n:""},
+{d:"Cétirizine",m:"Zyrtec, Virlix (autre : desloratadine Aerius)",c:"Antihistaminique",i:"Rhinite allergique, urticaire.",e:"Somnolence légère, maux de tête.",s:"Vigilance.",ci:"Insuffisance rénale sévère.",n:""},
+{d:"Tamsulosine",m:"Omix, Josir, Mecir",c:"Alpha-bloquant",i:"Troubles urinaires de l'adénome de la prostate.",e:"Chute de tension en se levant, vertiges, troubles de l'éjaculation.",s:"Tension debout ; risque de chute ; prise après un repas.",ci:"Antécédent de chute de tension en se levant ; insuffisance hépatique sévère.",n:""}
+];
+
 const COMP=["Évaluer une situation clinique et établir un diagnostic infirmier","Concevoir et conduire un projet de soins infirmiers","Accompagner une personne dans la réalisation de ses soins quotidiens","Mettre en œuvre des actions à visée diagnostique et thérapeutique","Initier et mettre en œuvre des soins éducatifs et préventifs","Communiquer et conduire une relation dans un contexte de soins","Analyser la qualité des soins et améliorer sa pratique professionnelle","Rechercher et traiter des données professionnelles et scientifiques","Organiser et coordonner des interventions soignantes","Informer et former des professionnels et des personnes en formation"];
 const LVL=[{n:'À évaluer',c:'#dde2ea'},{n:'À travailler',c:'#ffb3c4'},{n:'En cours',c:'#ffd27a'},{n:'Acquise',c:'#8fe0b5'}];
 const ACTES=["Prise de sang","Pose de cathéter (VVP)","Injection sous-cutanée","Injection intramusculaire","Glycémie capillaire","Pansement simple","Pansement complexe","Ablation fils / agrafes","Sondage urinaire","Pose de sonde gastrique","ECG","Préparation de pousse-seringue","Aspiration trachéale","Participation à une transfusion"];
@@ -446,12 +690,36 @@ const $=id=>document.getElementById(id);
 const getToday=()=>{const t=new Date();t.setHours(0,0,0,0);return t};
 let today=getToday();
 
-function fresh(){return{first:true,plan:{},dur:{},stage:{lieu:'',service:'',tuteur:'',tel:'',debut:'',fin:''},obj:[],comp:COMP.map(()=>0),actes:ACTES.map(n=>({n,c:0})),ech:[],bag:BAG.map(t=>({t,done:false})),notes:'',love:{seen:[],fav:[],cur:null},quiz:{ok:0,tot:0},pat:[],tour:{}}}
+function fresh(){return{first:true,plan:{},dur:{},stage:{lieu:'',service:'',tuteur:'',tel:'',debut:'',fin:''},obj:[],comp:COMP.map(()=>0),actes:ACTES.map(n=>({n,c:0})),ech:[],bag:BAG.map(t=>({t,done:false})),notes:'',love:{seen:[],fav:[],cur:null},quiz:{ok:0,tot:0},pat:[],tour:{},tips:{},sec:{delay:5}}}
 let S=fresh();
-try{const raw=localStorage.getItem(KEY);if(raw)S=Object.assign(fresh(),JSON.parse(raw))}catch(e){}
+const ENC=KEY+'-enc';
+const CRYPTO_OK=!!(window.isSecureContext&&window.crypto&&crypto.subtle&&window.TextEncoder);
+let encBlob=null;try{encBlob=JSON.parse(localStorage.getItem(ENC)||'null')}catch(e){}
+let locked=!!encBlob,lockKey=null,lockSalt=null,lockIter=210000;
+if(!locked){try{const raw=localStorage.getItem(KEY);if(raw)S=Object.assign(fresh(),JSON.parse(raw))}catch(e){}}
+else S.first=false;
 function applyDur(){for(const k in P){const base={M:7.5,S:7.5,J:12,N:10,I:7,R:0,A:0}[k];P[k].d=S.dur&&S.dur[k]!=null?num(S.dur[k]):base}}
 applyDur();
-const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+const b64=u=>{let s='';const a=new Uint8Array(u);for(let i=0;i<a.length;i++)s+=String.fromCharCode(a[i]);return btoa(s)};
+const unb64=t=>Uint8Array.from(atob(t),c=>c.charCodeAt(0));
+async function deriveKey(pin,saltB64,iter){
+  const base=await crypto.subtle.importKey('raw',new TextEncoder().encode(pin),'PBKDF2',false,['deriveKey']);
+  return crypto.subtle.deriveKey({name:'PBKDF2',salt:unb64(saltB64),iterations:iter,hash:'SHA-256'},base,{name:'AES-GCM',length:256},false,['encrypt','decrypt']);
+}
+let saveT=null,saving=Promise.resolve();
+async function encSave(){
+  clearTimeout(saveT);saveT=null;
+  if(!lockKey)return;
+  const iv=crypto.getRandomValues(new Uint8Array(12));
+  const ct=await crypto.subtle.encrypt({name:'AES-GCM',iv},lockKey,new TextEncoder().encode(JSON.stringify(S)));
+  try{localStorage.setItem(ENC,JSON.stringify({v:1,salt:lockSalt,it:lockIter,iv:b64(iv),ct:b64(ct)}));localStorage.removeItem(KEY)}catch(e){toast('Enregistrement impossible : mémoire pleine ?')}
+}
+function flushSave(){if(saveT){saving=encSave().catch(()=>{})}return saving}
+const save=()=>{
+  if(locked)return;
+  if(lockKey){clearTimeout(saveT);saveT=setTimeout(()=>{saving=encSave().catch(()=>{})},150);return}
+  try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){toast('Enregistrement impossible : mémoire pleine ?')}
+};
 const work=k=>!!(k&&P[k]&&P[k].d>0&&!P[k].school);
 
 /* ---------- Toast ---------- */
@@ -502,7 +770,7 @@ $('ov').addEventListener('click',e=>{
     S.first=false;save();renderAll();showLoveOverlay();
   }
 });
-document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('sheet').classList.contains('on')){closeSheet();return}if(e.key==='Escape'&&$('ov').classList.contains('on')&&!S.first)$('ov').classList.remove('on')});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('srch').classList.contains('on')){closeSearch();return}if(e.key==='Escape'&&$('sheet').classList.contains('on')){closeSheet();return}if(e.key==='Escape'&&$('ov').classList.contains('on')&&!S.first)$('ov').classList.remove('on')});
 
 /* ---------- Accueil ---------- */
 const days=d=>Math.round((d-today)/864e5);
@@ -704,7 +972,8 @@ function renderSheet(){
   <textarea id="trI" style="min-height:110px" placeholder="Ce qui a été fait, observé, à surveiller…"></textarea>
   <div class="btns"><button id="trDar">Modèle cible / données / actions / résultats</button><button class="pri" id="trAdd">Ajouter</button></div>
   <div id="trL" style="margin-top:8px">${p.tr.length?p.tr.map((t,i)=>`<div class="tr"><small><span>${esc(shortDT(t.t))}</span><button class="x" data-tdel="${i}" aria-label="Supprimer" style="min-height:32px;width:32px;background:none;color:var(--mut);padding:0">✕</button></small><p>${esc(t.txt)}</p></div>`).join(''):'<p class="hint">Aucune transmission.</p>'}</div>
-  <button id="pDel" style="margin-top:24px;width:100%">Supprimer ce patient</button>
+  <button id="pPrint" style="margin-top:24px;width:100%">Imprimer la fiche</button>
+  <button id="pDel" style="margin-top:10px;width:100%">Supprimer ce patient</button>
   </main>`;
 }
 let pd2=0;
@@ -719,12 +988,237 @@ $('sheet').addEventListener('click',e=>{const p=pById(openPid);const b=e.target.
   else if(b.dataset.tdel!=null){p.tr.splice(+b.dataset.tdel,1);save();renderSheet()}
   else if(b.id==='trDar'){const t=$('trI');t.value+=(t.value&&!t.value.endsWith('\n')?'\n':'')+'Cible : \nDonnées : \nActions : \nRésultats : ';t.focus()}
   else if(b.id==='trAdd'){const v=$('trI').value.trim();if(!v){toast('Écris la transmission');return}p.tr.unshift({t:nowStr(),txt:v});save();renderSheet();toast('Transmission ajoutée')}
+  else if(b.id==='pPrint'){printPatient(p)}
   else if(b.id==='pDel'){if(!pd2){pd2=1;b.textContent='Touche encore pour supprimer';setTimeout(()=>{pd2=0;const x=$('pDel');if(x)x.textContent='Supprimer ce patient'},3000);return}
     pd2=0;S.pat=S.pat.filter(x=>x.id!==p.id);for(const d in S.tour)S.tour[d]=S.tour[d].filter(v=>v.pid!==p.id);save();closeSheet();renderHome();toast('Patient supprimé')}
 });
 
+
+/* ---------- Recherche tolérante ---------- */
+const norm=t=>String(t==null?'':t).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/œ/g,'oe').replace(/[^a-z0-9]+/g,' ').trim();
+function lev(a,b,max){if(Math.abs(a.length-b.length)>max)return max+1;let prev=Array.from({length:b.length+1},(_,i)=>i);
+  for(let i=1;i<=a.length;i++){const cur=[i];let best=i;for(let j=1;j<=b.length;j++){cur[j]=Math.min(prev[j]+1,cur[j-1]+1,prev[j-1]+(a[i-1]===b[j-1]?0:1));if(cur[j]<best)best=cur[j]}if(best>max)return max+1;prev=cur}return prev[b.length]}
+function tokScore(tok,words,joined){
+  let best=0;
+  for(const w of words){
+    if(w===tok){best=Math.max(best,10);continue}
+    if(w.startsWith(tok)){best=Math.max(best,tok.length>=2?8:5);continue}
+    if(tok.length>=3&&w.includes(tok)){best=Math.max(best,5);continue}
+    if(tok.length>=4){const max=tok.length>=7?2:1;const cmp=w.slice(0,Math.max(tok.length,Math.min(w.length,tok.length+1)));
+      if(lev(tok,cmp,max)<=max||lev(tok,w,max)<=max)best=Math.max(best,3)}
+  }
+  if(!best&&tok.length>=3&&joined.includes(tok))best=4;
+  return best;
+}
+function score(q,fields){ // fields: [[texte, poids], ...]
+  const toks=norm(q).split(' ').filter(Boolean);if(!toks.length)return 0;
+  let total=0;
+  for(const t of toks){let best=0;
+    for(const [txt,w] of fields){const n=norm(txt);if(!n)continue;const sc=tokScore(t,n.split(' '),n.replace(/ /g,''));if(sc)best=Math.max(best,sc*w)}
+    if(!best)return 0;total+=best}
+  return total;
+}
+function hl(text,q){ // surligne les mots cherchés (texte échappé)
+  const toks=norm(q).split(' ').filter(t=>t.length>=2);let out=esc(text);if(!toks.length)return out;
+  const src=String(text),n=src.normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase();
+  const marks=[];for(const t of toks){let i=n.indexOf(t);while(i>=0){marks.push([i,i+t.length]);i=n.indexOf(t,i+t.length)}}
+  if(!marks.length||n.length!==src.length)return out;
+  marks.sort((a,b)=>a[0]-b[0]);let r='',pos=0;for(const [a,b] of marks){if(a<pos)continue;r+=esc(src.slice(pos,a))+'<mark>'+esc(src.slice(a,b))+'</mark>';pos=b}
+  return r+esc(src.slice(pos));
+}
+
+/* ---------- Médicaments ---------- */
+const MED_SORTED=MEDS.map((m,i)=>({...m,i})).sort((a,b)=>a.d.localeCompare(b.d,'fr'));
+function medFields(m){return [[m.d,3],[m.m,3],[m.c,1.6],[m.i,1],[m.n||'',.6]]}
+function searchMeds(q){return MEDS.map((m,i)=>({m,i,sc:score(q,medFields(m))})).filter(x=>x.sc>0).sort((a,b)=>b.sc-a.sc)}
+let curMed=null;
+function medItem(m,i,q){return `<button class="mitem" data-med="${i}"><b>${q?hl(m.d,q):esc(m.d)}</b><small>${q?hl(m.m,q):esc(m.m)}</small><small>${esc(m.c)}</small></button>`}
+function renderMeds(){
+  const q=$('mQ').value.trim();
+  if(curMed!=null){$('mRes').innerHTML='';return}
+  if(q){const r=searchMeds(q);
+    $('mRes').innerHTML=r.length?`<p class="hint" style="margin:0 0 8px">${r.length} résultat${r.length>1?'s':''}</p>`+r.slice(0,40).map(x=>medItem(x.m,x.i,q)).join(''):`<p class="hint">Aucune fiche pour « ${esc(q)} » dans l’appli. Vérifie l’orthographe, essaie la molécule (DCI) ou consulte la base officielle ci-dessous.</p>`;
+  }else{
+    let h=`<p class="hint" style="margin:0 0 4px">${MEDS.length} fiches · touche un médicament ou tape son nom</p>`,L='';
+    for(const m of MED_SORTED){const l=norm(m.d)[0].toUpperCase();if(l!==L){L=l;h+=`<div class="letter">${L}</div>`}h+=medItem(m,m.i,'')}
+    $('mRes').innerHTML=h;
+  }
+}
+function showMed(i){
+  const m=MEDS[i];if(!m)return;curMed=i;
+  const sec=(t,v,cls='')=>v?`<div class="msec ${cls}"><h4>${t}</h4><p>${esc(v)}</p></div>`:'';
+  $('mDet').innerHTML=`<div class="mdet" id="medCard"><h3>${esc(m.d)}</h3><div class="brand">${esc(m.m)}</div><span class="cls">${esc(m.c)}</span>
+  ${sec('Indications',m.i)}${sec('Effets indésirables',m.e)}${sec('Surveillance infirmière',m.s)}${sec('Contre-indications',m.ci,'alert')}${sec('À savoir',m.n)}
+  <div class="btns" style="margin-top:14px"><button id="medBack">← Retour à la liste</button><button id="medPrint">Imprimer</button><button id="medOff">Fiche officielle</button></div></div>`;
+  renderMeds();window.scrollTo(0,0);
+}
+$('mQ').addEventListener('input',()=>{curMed=null;$('mDet').innerHTML='';renderMeds()});
+$('mRes').addEventListener('click',e=>{const b=e.target.closest('[data-med]');if(b)showMed(+b.dataset.med)});
+$('mDet').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
+  if(b.id==='medBack'){curMed=null;$('mDet').innerHTML='';renderMeds()}
+  else if(b.id==='medPrint')printMed(MEDS[curMed]);
+  else if(b.id==='medOff'){const m=MEDS[curMed];const name=m.d.split(/[ (]/)[0];
+    copy(name,'« '+name+' » copié : colle-le dans la recherche du site officiel');
+    const a=document.createElement('a');a.href='https://base-donnees-publique.medicaments.gouv.fr/';a.target='_blank';a.rel='noopener noreferrer';document.body.appendChild(a);a.click();a.remove()}
+});
+
+/* ---------- Astuces ---------- */
+const TIPS={
+ home:'<b>Astuce :</b> la loupe en haut à droite cherche partout dans l’appli : médicaments, patients, notes, mémo… même avec une faute de frappe.',
+ plan:'<b>Astuce :</b> choisis un poste dans la palette, puis touche les jours. Le bouton « Imprimer » sort ton mois sur papier ou en PDF.',
+ stage:'<b>Astuce :</b> indique les dates de ton stage, l’accueil affichera ta progression. Touche une compétence pour changer son niveau avant le bilan.',
+ pat:'<b>Astuce :</b> crée un patient avec ses initiales, ajoute ses visites, puis touche son nom pour ouvrir sa fiche. Protège ces données avec un code (Notes › Sécurité).',
+ med:'<b>Astuce :</b> tape le nom commercial ou la molécule, même mal écrit : « dolipran », « lovenox », « anticoagulant ». Puis « Fiche officielle » pour vérifier.',
+ calc:'<b>Astuce :</b> les résultats se calculent pendant que tu tapes. Plus bas : l’entraînement et le mémo (constantes, Glasgow, hypoglycémie, AES…).',
+ notes:'<b>Astuce :</b> copie ton code de sauvegarde de temps en temps et garde-le en lieu sûr. Dans « Sécurité », tu peux protéger l’appli par un code.'
+};
+function renderTips(){document.querySelectorAll('[data-tip]').forEach(el=>{const k=el.dataset.tip;if(S.tips[k]||!TIPS[k]){el.style.display='none';el.innerHTML='';return}
+  el.style.display='';el.innerHTML=`<span>${TIPS[k]}</span><button data-tipclose="${k}" aria-label="Masquer l’astuce">OK</button>`})}
+document.addEventListener('click',e=>{const b=e.target.closest('[data-tipclose]');if(!b)return;S.tips[b.dataset.tipclose]=1;save();renderTips()});
+
+/* ---------- Recherche globale ---------- */
+const TOOLS=[
+ ['Débit de perfusion','perfusion debit gouttes ml/h perfuseur','calc','pv'],
+ ['Dose selon le poids','dose poids mg/kg posologie','calc','dw'],
+ ['Pousse-seringue électrique','pousse seringue pse seringue electrique debit','calc','sd'],
+ ['Pourcentage → quantité','pourcentage concentration ampoule g mg','calc','cp'],
+ ['Conversion d’unités','conversion unites microgramme mg g','calc','uv'],
+ ['Entraînement calculs de doses','entrainement exercice quiz calcul dose','calc','quiz'],
+ ['Planning du mois','planning poste horaires calendrier','plan','cal'],
+ ['Heures de stage','heures compteur semaine nuits absences','plan','hTitle'],
+ ['Imprimer le planning','imprimer impression pdf planning','plan','printPlan'],
+ ['Ma tournée','tournee visites liberal domicile','pat','tList'],
+ ['Imprimer la tournée','imprimer impression tournee','pat','printTour'],
+ ['Mes compétences','competences bilan mi stage portfolio','stage','comps'],
+ ['Mes actes réalisés','actes compteur gestes soins','stage','actes'],
+ ['Mes échéances','echeances dates msp memoire diplome','stage','echEdit'],
+ ['Sac de stage','sac affaires checklist','notes','bag'],
+ ['Planning à envoyer','envoyer whatsapp partager planning','notes','share'],
+ ['Sauvegarde','sauvegarde restaurer code donnees','notes','bkCopy'],
+ ['Sécurité et code','securite code verrou pin proteger','notes','secTitle'],
+ ['Médicaments','medicaments medoc fiche dci','med','mQ']
+];
+function memoItems(){return [...document.querySelectorAll('#memo details')].map(d=>({id:d.id,t:d.querySelector('summary').textContent,x:d.textContent}))}
+let gQT=null;
+function runSearch(){
+  const q=$('gQ').value.trim();
+  if(!q){$('gRes').innerHTML='<p class="hint" style="margin-top:16px">Exemples : « lovenox », « glasgow », « Mme B », « perfusion », « pansement », « hypoglycémie »…</p>';return}
+  const G=[];
+  const meds=searchMeds(q).slice(0,8).map(x=>({sc:x.sc,h:`<button class="hit" data-go="med" data-med="${x.i}"><b>${hl(x.m.d,q)}</b><small>${hl(x.m.m,q)} · ${esc(x.m.c)}</small></button>`}));
+  if(meds.length)G.push(['Médicaments',meds]);
+  const pats=[];for(const p of S.pat){const tr=p.tr.map(t=>t.txt).join(' ');const sc=score(q,[[p.nom,3],[p.soins,1],[p.vig,1],[tr,.8]]);
+    if(sc){let ctx=p.soins||p.vig||'';const nq=norm(q).split(' ')[0];const hit=p.tr.find(t=>norm(t.txt).includes(nq));if(hit)ctx='Transmission du '+shortDT(hit.t)+' : '+hit.txt;
+      pats.push({sc,h:`<button class="hit" data-go="pat" data-pid="${esc(p.id)}"><b>${hl(p.nom,q)}</b><small>${hl(ctx.slice(0,140),q)}</small></button>`})}}
+  if(pats.length)G.push(['Patients',pats.sort((a,b)=>b.sc-a.sc)]);
+  const memo=memoItems().map(m=>({sc:score(q,[[m.t,2],[m.x,1]]),h:`<button class="hit" data-go="calc" data-el="${m.id}" data-open="1"><b>${hl(m.t,q)}</b><small>Mémo infirmier</small></button>`})).filter(x=>x.sc);
+  if(memo.length)G.push(['Mémo',memo.sort((a,b)=>b.sc-a.sc)]);
+  const tools=TOOLS.map(t=>({sc:score(q,[[t[0],2],[t[1],1]]),h:`<button class="hit" data-go="${t[2]}" data-el="${t[3]}"><b>${hl(t[0],q)}</b><small>Ouvrir</small></button>`})).filter(x=>x.sc);
+  if(tools.length)G.push(['Outils',tools.sort((a,b)=>b.sc-a.sc).slice(0,5)]);
+  const mine=[];
+  (S.notes||'').split('\n').forEach(l=>{if(l.trim()&&score(q,[[l,1]]))mine.push({sc:score(q,[[l,1]]),h:`<button class="hit" data-go="notes" data-el="notes"><b>${hl(l.slice(0,120),q)}</b><small>Mes notes</small></button>`})});
+  S.ech.forEach(e=>{const sc=score(q,[[e.t,1]]);if(sc)mine.push({sc,h:`<button class="hit" data-go="stage" data-el="echEdit"><b>${hl(e.t,q)}</b><small>Échéance · ${esc(e.d)}</small></button>`})});
+  S.obj.forEach(o=>{const sc=score(q,[[o.t,1]]);if(sc)mine.push({sc,h:`<button class="hit" data-go="stage" data-el="objs"><b>${hl(o.t,q)}</b><small>Objectif de stage</small></button>`})});
+  COMP.forEach((c,i)=>{const sc=score(q,[[c,1]]);if(sc)mine.push({sc:sc*.8,h:`<button class="hit" data-go="stage" data-el="comps"><b>C${i+1} · ${hl(c,q)}</b><small>Compétence · ${LVL[S.comp[i]||0].n}</small></button>`})});
+  S.actes.forEach(a=>{const sc=score(q,[[a.n,1]]);if(sc)mine.push({sc:sc*.8,h:`<button class="hit" data-go="stage" data-el="actes"><b>${hl(a.n,q)}</b><small>Acte réalisé · ${a.c} fois</small></button>`})});
+  if(mine.length)G.push(['Mes notes et mon stage',mine.sort((a,b)=>b.sc-a.sc).slice(0,12)]);
+  G.sort((a,b)=>Math.max(...b[1].map(x=>x.sc))-Math.max(...a[1].map(x=>x.sc)));
+  $('gRes').innerHTML=G.length?G.map(([t,arr])=>`<div class="grp">${t}</div>`+arr.map(x=>x.h).join('')).join(''):`<p class="hint" style="margin-top:16px">Rien trouvé pour « ${esc(q)} ». Essaie un autre mot ou une autre orthographe.</p>`;
+}
+function openSearch(){$('srch').classList.add('on');$('gQ').value='';runSearch();setTimeout(()=>$('gQ').focus(),30)}
+function closeSearch(){$('srch').classList.remove('on')}
+$('openSearch').addEventListener('click',openSearch);
+$('closeSearch').addEventListener('click',closeSearch);
+$('gQ').addEventListener('input',()=>{clearTimeout(gQT);gQT=setTimeout(runSearch,80)});
+$('gRes').addEventListener('click',e=>{const b=e.target.closest('[data-go]');if(!b)return;closeSearch();go(b.dataset.go,true);
+  if(b.dataset.med!=null){showMed(+b.dataset.med);return}
+  if(b.dataset.pid){openSheet(b.dataset.pid);return}
+  const el=b.dataset.el&&$(b.dataset.el);if(el){if(b.dataset.open&&el.tagName==='DETAILS')el.open=true;const tgt=el.closest('.card')||el;
+    setTimeout(()=>{tgt.scrollIntoView({block:'center'});tgt.classList.remove('flash');void tgt.offsetWidth;tgt.classList.add('flash')},60)}
+});
+
+/* ---------- Impression ---------- */
+function printDoc(title,sub,html){
+  const d=new Date();
+  $('printArea').innerHTML=`<h1>${esc(title)}</h1>${sub?`<p class="sub">${esc(sub)}</p>`:''}${html}<p class="pfoot">Imprimé depuis l’appli Infirmière Tita le ${esc(d.toLocaleDateString('fr-FR'))} à ${pad(d.getHours())}:${pad(d.getMinutes())}.</p>`;
+  document.body.classList.add('printing');
+  setTimeout(()=>{try{window.print()}catch(e){toast('Impression impossible ici')}},60);
+}
+window.addEventListener('afterprint',()=>{document.body.classList.remove('printing');$('printArea').innerHTML=''});
+$('printPlan').addEventListener('click',()=>{
+  const rows=monthDays().filter(x=>x.k).map(({dt,k})=>`<tr><td>${esc(dt.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric'}))}</td><td>${esc(P[k].n)}</td><td>${esc(P[k].h||'')}</td></tr>`).join('');
+  let tot=0;for(const {k} of monthDays())if(work(k))tot+=P[k].d;
+  printDoc('Planning · '+mName(cur),'Heures de stage du mois : '+fmt(tot,1)+' h',rows?`<table><tr><th>Jour</th><th>Poste</th><th>Horaires</th></tr>${rows}</table>`:'<p>Aucun poste saisi.</p>');
+});
+$('printTour').addEventListener('click',()=>{
+  const L=S.tour[tDay]||[];
+  const rows=L.map(v=>{const p=pById(v.pid);return `<tr><td>${esc(v.h||'')}</td><td>${p?esc(p.nom):''}</td><td>${esc(v.soins||'')}</td><td>${p&&p.vig?esc(p.vig):''}</td><td>${v.done?'✓':'☐'}</td></tr>`}).join('');
+  printDoc('Tournée',pd(tDay).toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long',year:'numeric'}),rows?`<table><tr><th>Heure</th><th>Patient</th><th>Soins</th><th>Vigilance</th><th>Fait</th></tr>${rows}</table>`:'<p>Aucune visite ce jour-là.</p>');
+});
+function printPatient(p){
+  const c=p.cst.length?`<table><tr><th>Date</th>${CF.map(f=>`<th>${f[1]}</th>`).join('')}</tr>${p.cst.map(r=>`<tr><td>${esc(shortDT(r.t))}</td>${CF.map(f=>`<td>${esc(r[f[0]]||'')}</td>`).join('')}</tr>`).join('')}</table>`:'<p>Aucune constante.</p>';
+  const t=p.tr.length?p.tr.map(x=>`<div class="box"><b>${esc(shortDT(x.t))}</b><br>${esc(x.txt).replace(/\n/g,'<br>')}</div>`).join(''):'<p>Aucune transmission.</p>';
+  printDoc('Fiche patient · '+p.nom,p.age?p.age+' ans':'',`<h2>Soins habituels</h2><p>${esc(p.soins||'—')}</p><h2>Points de vigilance</h2><p>${esc(p.vig||'—')}</p><h2>Constantes</h2>${c}<h2>Transmissions</h2>${t}`);
+}
+function printMed(m){
+  const sec=(t,v)=>v?`<h2>${t}</h2><p>${esc(v)}</p>`:'';
+  printDoc(m.d,m.m+' · '+m.c,sec('Indications',m.i)+sec('Effets indésirables',m.e)+sec('Surveillance infirmière',m.s)+sec('Contre-indications',m.ci)+sec('À savoir',m.n)+'<p class="sub">Fiche mémo : vérifier avec la prescription et le RCP (base-donnees-publique.medicaments.gouv.fr).</p>');
+}
+
+/* ---------- Sécurité : code et chiffrement ---------- */
+function renderSec(){
+  const box=$('secBox');if(!box)return;
+  if(!CRYPTO_OK){box.innerHTML='<p class="hint" style="margin:0">Le code de protection est disponible quand l’appli est ouverte depuis son lien internet (https).</p>';return}
+  if(lockKey){
+    box.innerHTML=`<p style="margin:0 0 8px"><b>Appli protégée par un code.</b> Tes données sont chiffrées sur ce téléphone.</p>
+    <div class="row"><span>Verrouiller après</span><select id="secDelay" style="width:auto">${[1,5,15,30].map(m=>`<option value="${m}" ${+S.sec.delay===m?'selected':''}>${m} min hors de l’appli</option>`).join('')}</select></div>
+    <div class="btns"><button id="secLockNow" class="pri">Verrouiller maintenant</button><button id="secOff">Retirer le code</button></div>`;
+  }else{
+    box.innerHTML=`<p style="margin:0 0 8px">Protège l’appli (et les données de tes patients) avec un code de 4 à 6 chiffres. Les données seront chiffrées sur le téléphone.</p>
+    <div class="f2"><label>Nouveau code<input id="pin1" type="password" inputmode="numeric" maxlength="6" autocomplete="off"></label><label>Confirmer<input id="pin2" type="password" inputmode="numeric" maxlength="6" autocomplete="off"></label></div>
+    <button class="pri" id="secOn" style="margin-top:10px;width:100%">Activer le code</button>
+    <p class="hint">Important : si tu oublies ce code, tes données ne pourront pas être récupérées. Copie d’abord ton code de sauvegarde.</p>`;
+  }
+}
+let secOffArm=0;
+$('secBox').addEventListener('change',e=>{if(e.target.id==='secDelay'){S.sec.delay=+e.target.value;save();toast('Réglage enregistré')}});
+$('secBox').addEventListener('click',async e=>{const b=e.target.closest('button');if(!b)return;
+  if(b.id==='secOn'){const a=$('pin1').value,c=$('pin2').value;
+    if(!/^\d{4,6}$/.test(a)){toast('Le code doit faire 4 à 6 chiffres');return}
+    if(a!==c){toast('Les deux codes ne sont pas identiques');return}
+    b.disabled=true;b.textContent='Activation…';
+    try{lockSalt=b64(crypto.getRandomValues(new Uint8Array(16)));lockIter=210000;lockKey=await deriveKey(a,lockSalt,lockIter);await encSave();
+      encBlob=JSON.parse(localStorage.getItem(ENC));if(!encBlob)throw 0;toast('Code activé. Ne l’oublie pas !')}
+    catch(err){lockKey=null;toast('Activation impossible sur ce téléphone')}
+    renderSec();
+  }
+  else if(b.id==='secOff'){if(!secOffArm){secOffArm=1;b.textContent='Touche encore pour retirer';setTimeout(()=>{secOffArm=0;const x=$('secOff');if(x)x.textContent='Retirer le code'},3000);return}
+    secOffArm=0;clearTimeout(saveT);saveT=null;lockKey=null;lockSalt=null;try{localStorage.setItem(KEY,JSON.stringify(S));localStorage.removeItem(ENC)}catch(err){}encBlob=null;renderSec();toast('Code retiré')}
+  else if(b.id==='secLockNow'){await flushSave();location.reload()}
+});
+let fails=0,waitUntil=0;
+function showLock(){$('lock').classList.add('on');$('lockPin').value='';setTimeout(()=>$('lockPin').focus(),60)}
+$('lockF').addEventListener('submit',async e=>{e.preventDefault();
+  const pin=$('lockPin').value,err=$('lockErr');
+  if(Date.now()<waitUntil){err.textContent='Patiente '+Math.ceil((waitUntil-Date.now())/1000)+' s avant de réessayer';return}
+  if(!CRYPTO_OK){err.textContent='Ouvre l’appli depuis son lien internet pour la déverrouiller';return}
+  if(!/^\d{4,6}$/.test(pin)){err.textContent='Code de 4 à 6 chiffres';return}
+  $('lockGo').disabled=true;err.textContent='';
+  try{const blob=encBlob;const key=await deriveKey(pin,blob.salt,blob.it||210000);
+    const pt=await crypto.subtle.decrypt({name:'AES-GCM',iv:unb64(blob.iv)},key,unb64(blob.ct));
+    const data=JSON.parse(new TextDecoder().decode(pt));
+    S=Object.assign(fresh(),data);S.first=false;lockKey=key;lockSalt=blob.salt;lockIter=blob.it||210000;locked=false;fails=0;
+    applyDur();$('lock').classList.remove('on');$('lockPin').value='';renderAll();renderMeds();showLoveOverlay();
+  }catch(x){fails++;$('lockPin').value='';err.textContent='Code incorrect';if(fails>=5){waitUntil=Date.now()+30000;fails=0;err.textContent='Trop d’essais : patiente 30 s'}}
+  $('lockGo').disabled=false;
+});
+let forgotArm=0;
+$('lockForgot').addEventListener('click',e=>{
+  if(!forgotArm){forgotArm=1;$('lockErr').textContent='Sans le code, les données ne peuvent pas être récupérées. Touche encore « Code oublié ? » pour TOUT effacer et repartir de zéro (tu pourras restaurer un code de sauvegarde).';setTimeout(()=>{forgotArm=0},8000);return}
+  try{localStorage.removeItem(ENC);localStorage.removeItem(KEY)}catch(x){}location.reload();
+});
+
 /* ---------- Navigation ---------- */
-const VIEWS=['home','plan','stage','calc','pat','notes'];
+const VIEWS=['home','plan','stage','pat','med','calc','notes'];
 function go(v,push){if(!VIEWS.includes(v))v='home';
   document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('on',x.dataset.v===v));
   document.querySelectorAll('.view').forEach(x=>x.classList.toggle('on',x.id==='v-'+v));
@@ -732,18 +1226,21 @@ function go(v,push){if(!VIEWS.includes(v))v='home';
 $('nav').addEventListener('click',e=>{const b=e.target.closest('[data-v]');if(b)go(b.dataset.v,true)});
 window.addEventListener('hashchange',()=>go(location.hash.slice(1)));
 
-function renderAll(){today=getToday();if(!tDay)tDay=iso(today);renderHome();renderPlan();renderStage();renderPat();renderNotes()}
+function renderAll(){today=getToday();if(!tDay)tDay=iso(today);renderHome();renderPlan();renderStage();renderPat();renderNotes();renderTips();renderSec()}
 
 /* nouveau mot quand elle revient après un moment */
 let hiddenAt=0;
 document.addEventListener('visibilitychange',()=>{
-  if(document.hidden){hiddenAt=Date.now();return}
-  if(hiddenAt&&Date.now()-hiddenAt>15*60*1000&&!S.first){renderAll();showLoveOverlay()}
-  hiddenAt=0;
+  if(document.hidden){hiddenAt=Date.now();flushSave();return}
+  const away=hiddenAt?Date.now()-hiddenAt:0;hiddenAt=0;
+  if(locked)return;
+  if(lockKey&&away>(+S.sec.delay||5)*60*1000){flushSave().then(()=>location.reload());return}
+  if(away>15*60*1000&&!S.first){renderAll();showLoveOverlay()}
 });
+window.addEventListener('pagehide',()=>{flushSave()});
 
-renderAll();calc();newQ();go(location.hash.slice(1));
-if(S.first)showWelcome();else showLoveOverlay();
+renderAll();calc();newQ();go(location.hash.slice(1));renderMeds();
+if(locked)showLock();else if(S.first)showWelcome();else showLoveOverlay();
 if('serviceWorker' in navigator&&location.protocol==='https:'){navigator.serviceWorker.register('sw.js').catch(()=>{})}
 }
 </script>
